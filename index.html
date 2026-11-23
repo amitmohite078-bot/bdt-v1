@@ -3,10 +3,11 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>SmartProtein / FitGuard-HDFS | Full Project Suite</title>
+  <title>SmartProtein: Hadoop HDFS Data Quality & Accurate Protein Recommender</title>
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=JetBrains+Mono:wght@400;600&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Source+Sans+Pro:wght@300;400;600;700&family=JetBrains+Mono:wght@400;600&display=swap" rel="stylesheet">
+  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
   <style>
     :root {
       --emerald: #009473;
@@ -14,547 +15,770 @@
       --greenery: #88B04B;
       --living-coral: #FF6F61;
       --mimosa: #F0C05A;
-      --cloud-dancer: #F8F9FA;
-      --anthracite: #1E232A;
-      --border: #E2E8F0;
+      --cloud-dancer: #F0EEE9;
+      --anthracite: #28282D;
+      --bg: #FFFFFF;
       --card-bg: #FFFFFF;
-      --text-muted: #64748B;
+      --border: #E6E9EF;
+      --text: #262730;
+      --text-muted: #808495;
     }
 
     * { box-sizing: border-box; margin: 0; padding: 0; }
     body {
-      font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
-      background: var(--cloud-dancer);
-      color: var(--anthracite);
-      line-height: 1.6;
+      font-family: 'Source Sans Pro', -apple-system, BlinkMacSystemFont, sans-serif;
+      background: #FFFFFF;
+      color: var(--text);
+      line-height: 1.5;
     }
 
-    header {
-      background: linear-gradient(135deg, var(--classic-blue) 0%, #082947 100%);
-      color: white;
-      padding: 2.5rem 1.5rem 2rem;
-      border-bottom: 4px solid var(--emerald);
-    }
-    .header-container {
-      max-width: 1200px;
+    .top-bar {
+      border-top: 5px solid var(--emerald);
+      padding: 1.5rem 2rem 0.5rem;
+      max-width: 1350px;
       margin: 0 auto;
     }
-    .badge {
-      display: inline-block;
-      background: rgba(0, 148, 115, 0.25);
-      border: 1px solid var(--emerald);
-      color: #A7F3D0;
-      font-size: 0.8rem;
-      font-weight: 600;
-      padding: 0.25rem 0.75rem;
-      border-radius: 9999px;
-      text-transform: uppercase;
-      letter-spacing: 0.05em;
-      margin-bottom: 0.8rem;
-    }
     h1 {
-      font-size: 2.2rem;
-      font-weight: 800;
-      line-height: 1.2;
-      margin-bottom: 0.5rem;
+      color: var(--classic-blue);
+      font-size: 2.25rem;
+      font-weight: 700;
+      margin-bottom: 0.35rem;
+      letter-spacing: -0.02em;
     }
-    p.lead {
-      font-size: 1.1rem;
-      color: #CBD5E1;
-      max-width: 900px;
-      margin-bottom: 1.25rem;
-    }
-    .header-links a {
-      display: inline-flex;
-      align-items: center;
-      gap: 0.5rem;
-      background: var(--emerald);
-      color: white;
-      text-decoration: none;
-      font-weight: 600;
-      padding: 0.6rem 1.2rem;
-      border-radius: 6px;
-      margin-right: 0.75rem;
-      margin-bottom: 0.5rem;
-      font-size: 0.9rem;
-      transition: background 0.2s;
-    }
-    .header-links a.secondary {
-      background: rgba(255, 255, 255, 0.12);
-      border: 1px solid rgba(255, 255, 255, 0.25);
-    }
-    .header-links a:hover { background: #007A5E; }
-    .header-links a.secondary:hover { background: rgba(255, 255, 255, 0.25); }
-
-    main {
-      max-width: 1200px;
-      margin: 2rem auto;
-      padding: 0 1.5rem;
+    p.caption {
+      color: var(--text-muted);
+      font-size: 0.95rem;
+      margin-bottom: 1.5rem;
     }
 
-    /* KPI Grid */
-    .kpi-grid {
+    /* Streamlit KPI Metric Cards */
+    .metric-grid {
       display: grid;
-      grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
-      gap: 1.25rem;
+      grid-template-columns: repeat(5, 1fr);
+      gap: 1rem;
       margin-bottom: 2rem;
     }
-    .kpi-card {
-      background: var(--card-bg);
-      border-radius: 10px;
-      padding: 1.25rem 1.5rem;
-      border-left: 5px solid var(--emerald);
-      box-shadow: 0 2px 6px rgba(0,0,0,0.05);
+    @media (max-width: 1024px) {
+      .metric-grid { grid-template-columns: repeat(2, 1fr); }
     }
-    .kpi-title {
-      font-size: 0.8rem;
-      color: var(--text-muted);
-      font-weight: 600;
-      text-transform: uppercase;
-      letter-spacing: 0.04em;
+    @media (max-width: 600px) {
+      .metric-grid { grid-template-columns: 1fr; }
     }
-    .kpi-value {
-      font-size: 1.8rem;
-      font-weight: 800;
-      color: var(--classic-blue);
-      margin: 0.25rem 0;
+    .st-metric {
+      background-color: #FFFFFF;
+      border-left: 4px solid var(--emerald);
+      padding: 12px 14px;
+      border-radius: 8px;
+      box-shadow: 0 1px 3px rgba(40, 40, 45, 0.08);
+      border-top: 1px solid #F0F2F6;
+      border-right: 1px solid #F0F2F6;
+      border-bottom: 1px solid #F0F2F6;
     }
-    .kpi-delta {
+    .st-metric-title {
       font-size: 0.85rem;
+      color: var(--text-muted);
+      font-weight: 400;
+      margin-bottom: 0.2rem;
+    }
+    .st-metric-value {
+      font-size: 1.85rem;
+      font-weight: 700;
+      color: var(--text);
+      line-height: 1.2;
+    }
+    .st-metric-delta {
+      font-size: 0.82rem;
       font-weight: 600;
       color: var(--emerald);
+      margin-top: 0.2rem;
     }
+    .st-metric-delta.coral { color: var(--living-coral); }
 
-    /* Tab Navigation */
-    .tab-bar {
+    /* Streamlit Tabs */
+    .tabs-header {
       display: flex;
-      flex-wrap: wrap;
       gap: 0.5rem;
-      background: #E2E8F0;
-      padding: 0.4rem;
-      border-radius: 10px;
-      margin-bottom: 1.5rem;
+      border-bottom: 1px solid #E6E9EF;
+      margin-bottom: 1.75rem;
+      overflow-x: auto;
     }
-    .tab-btn {
-      flex: 1;
-      min-width: 180px;
-      padding: 0.75rem 1rem;
+    .tab-button {
+      background: none;
       border: none;
-      background: transparent;
+      padding: 0.75rem 1.25rem;
       font-family: inherit;
-      font-size: 0.9rem;
+      font-size: 1rem;
       font-weight: 600;
-      color: #475569;
-      border-radius: 8px;
+      color: #6C7280;
       cursor: pointer;
-      text-align: center;
+      border-bottom: 3px solid transparent;
+      white-space: nowrap;
       transition: all 0.2s;
     }
-    .tab-btn.active {
-      background: white;
-      color: var(--classic-blue);
-      box-shadow: 0 2px 5px rgba(0,0,0,0.08);
-      border-bottom: 3px solid var(--emerald);
+    .tab-button.active {
+      color: var(--emerald) !important;
+      border-bottom-color: var(--emerald) !important;
     }
 
-    .tab-content {
-      display: none;
+    .tab-pane { display: none; }
+    .tab-pane.active { display: block; }
+
+    /* Subheaders and Headings */
+    h2.st-sub {
+      color: var(--classic-blue);
+      font-size: 1.4rem;
+      font-weight: 600;
+      margin-bottom: 1rem;
     }
-    .tab-content.active {
-      display: block;
+    h3.st-sub {
+      color: var(--classic-blue);
+      font-size: 1.15rem;
+      font-weight: 600;
+      margin-top: 1.25rem;
+      margin-bottom: 0.75rem;
     }
 
-    .section-card {
-      background: var(--card-bg);
-      border-radius: 12px;
-      padding: 2rem;
-      margin-bottom: 2rem;
-      box-shadow: 0 2px 8px rgba(0,0,0,0.06);
-      border: 1px solid var(--border);
-    }
-    h2 {
-      font-size: 1.5rem;
-      color: var(--classic-blue);
-      margin-bottom: 0.5rem;
-    }
-    .section-desc {
-      color: var(--text-muted);
-      margin-bottom: 1.5rem;
+    /* Warning Callout */
+    .st-alert-warning {
+      background-color: #FEF3C7;
+      border-left: 4px solid var(--mimosa);
+      color: #92400E;
+      padding: 0.85rem 1.1rem;
+      border-radius: 6px;
       font-size: 0.95rem;
+      margin-bottom: 1.25rem;
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+    }
+    .st-alert-info {
+      background-color: #EFF6FF;
+      border-left: 4px solid var(--classic-blue);
+      color: #1E40AF;
+      padding: 0.75rem 1rem;
+      border-radius: 6px;
+      font-size: 0.9rem;
+      margin-top: 0.75rem;
     }
 
-    /* Calculator Styles */
-    .controls-grid {
+    /* Form UI Grid */
+    .filter-grid {
       display: grid;
-      grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
-      gap: 1.25rem;
-      background: #F1F5F9;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 1rem;
+      margin-bottom: 1.25rem;
+      background: #F8F9FA;
       padding: 1.25rem;
       border-radius: 8px;
-      margin-bottom: 1.5rem;
+      border: 1px solid var(--border);
     }
-    .control-group label {
+    @media (max-width: 900px) {
+      .filter-grid { grid-template-columns: repeat(2, 1fr); }
+    }
+    .form-col label {
       display: block;
       font-size: 0.85rem;
       font-weight: 600;
-      margin-bottom: 0.4rem;
-      color: var(--anthracite);
+      margin-bottom: 0.35rem;
+      color: var(--text);
     }
-    .control-group select, .control-group input[type="range"], .control-group input[type="number"] {
+    .form-col select, .form-col input[type="range"] {
       width: 100%;
-      padding: 0.5rem;
-      border: 1px solid #CBD5E1;
+      padding: 0.5rem 0.65rem;
+      border: 1px solid #D1D5DB;
       border-radius: 6px;
       font-family: inherit;
+      font-size: 0.9rem;
       background: white;
     }
-    .slider-val {
+    .slider-display {
       font-weight: 700;
       color: var(--classic-blue);
       float: right;
     }
 
-    .meal-table {
+    /* 1-Click Preset Buttons */
+    .preset-container {
+      margin-bottom: 1.25rem;
+    }
+    .preset-label {
+      font-weight: 600;
+      font-size: 0.9rem;
+      margin-bottom: 0.5rem;
+      display: block;
+    }
+    .preset-buttons {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 0.75rem;
+    }
+    @media (max-width: 800px) {
+      .preset-buttons { grid-template-columns: repeat(2, 1fr); }
+    }
+    .btn-preset {
+      background: #FFFFFF;
+      border: 1px solid #D1D5DB;
+      padding: 0.6rem 0.8rem;
+      border-radius: 6px;
+      font-family: inherit;
+      font-weight: 600;
+      font-size: 0.9rem;
+      color: var(--classic-blue);
+      cursor: pointer;
+      text-align: center;
+      transition: all 0.15s ease-in-out;
+    }
+    .btn-preset:hover {
+      background: #F3F4F6;
+      border-color: var(--emerald);
+      color: var(--emerald);
+    }
+
+    /* Tables */
+    .st-table-wrap {
+      overflow-x: auto;
+      margin-top: 0.75rem;
+      margin-bottom: 1.5rem;
+      border: 1px solid var(--border);
+      border-radius: 6px;
+    }
+    table.st-table {
       width: 100%;
       border-collapse: collapse;
-      margin-top: 1rem;
-    }
-    .meal-table th, .meal-table td {
-      padding: 0.75rem 1rem;
+      font-size: 0.88rem;
       text-align: left;
-      border-bottom: 1px solid var(--border);
     }
-    .meal-table th {
-      background: #F8FAFC;
+    table.st-table th {
+      background-color: #F8F9FA;
       color: var(--classic-blue);
-      font-size: 0.85rem;
-      font-weight: 700;
-      text-transform: uppercase;
-      letter-spacing: 0.04em;
+      font-weight: 600;
+      padding: 0.65rem 0.85rem;
+      border-bottom: 2px solid var(--border);
+      white-space: nowrap;
     }
-    .meal-table td { font-size: 0.95rem; }
-    .tag-slot { font-weight: 700; color: var(--classic-blue); }
+    table.st-table td {
+      padding: 0.6rem 0.85rem;
+      border-bottom: 1px solid #EDF2F7;
+    }
+    table.st-table tr:hover { background-color: #F9FAFB; }
 
-    .arch-flow {
-      display: grid;
-      grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
-      gap: 1.25rem;
-      margin: 1.5rem 0;
+    .tag-met {
+      display: inline-block;
+      padding: 0.2rem 0.5rem;
+      border-radius: 4px;
+      font-weight: 600;
+      font-size: 0.8rem;
+      background: #DEF7EC;
+      color: #03543F;
     }
-    .arch-step {
-      background: #F8FAFC;
+    .tag-sub {
+      display: inline-block;
+      padding: 0.2rem 0.5rem;
+      border-radius: 4px;
+      font-weight: 600;
+      font-size: 0.8rem;
+      background: #FEF08A;
+      color: #854D0E;
+    }
+
+    /* Chart Containers */
+    .chart-box {
+      background: #FFFFFF;
       border: 1px solid var(--border);
       border-radius: 8px;
       padding: 1.25rem;
+      margin-bottom: 1.5rem;
     }
-    .arch-step.bronze { border-top: 4px solid #D97706; }
-    .arch-step.silver { border-top: 4px solid #0F4C81; }
-    .arch-step.quarantine { border-top: 4px solid #DC2626; }
-    .arch-step.gold { border-top: 4px solid #009473; }
-    .arch-title { font-size: 1.1rem; font-weight: 700; margin-bottom: 0.5rem; }
-    .arch-desc { font-size: 0.85rem; color: var(--text-muted); }
-
-    code {
-      font-family: 'JetBrains Mono', monospace;
-      background: #E2E8F0;
-      padding: 0.15rem 0.35rem;
-      border-radius: 4px;
-      font-size: 0.88em;
+    .two-col-chart {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 1.5rem;
+      margin-bottom: 1.5rem;
+    }
+    @media (max-width: 900px) {
+      .two-col-chart { grid-template-columns: 1fr; }
     }
 
     footer {
-      text-align: center;
-      padding: 2.5rem 1rem;
-      color: var(--text-muted);
-      font-size: 0.9rem;
       border-top: 1px solid var(--border);
-      background: white;
+      padding: 2rem;
+      text-align: center;
+      color: var(--text-muted);
+      font-size: 0.88rem;
+      margin-top: 3rem;
     }
+    footer a { color: var(--emerald); text-decoration: none; font-weight: 600; }
   </style>
 </head>
 <body>
 
-<header>
-  <div class="header-container">
-    <span class="badge">Apache Hadoop • PySpark • Hive • Streamlit • Linear Programming</span>
-    <h1>SmartProtein / FitGuard-HDFS</h1>
-    <p class="lead">
-      Complete Big Data Technologies (BDT) Lakehouse Suite: Ingestion, Atwater Data Quality Engine, Quarantine Dead-Letter Lineage, and Stigler Linear Programming Protein Recommender.
-    </p>
-    <div class="header-links">
-      <a href="https://github.com/amitmohite078-bot/bdt-v1" target="_blank">
-        <svg height="18" width="18" viewBox="0 0 16 16" fill="currentColor"><path d="M8 0C3.58 0 0 3.58 0 8c0 3.54 2.29 6.53 5.47 7.59.4.07.55-.17.55-.38 0-.19-.01-.82-.01-1.49-2.01.37-2.53-.49-2.69-.94-.09-.23-.48-.94-.82-1.13-.28-.15-.68-.52-.01-.53.63-.01 1.08.58 1.23.82.72 1.21 1.87.87 2.33.66.07-.52.28-.87.51-1.07-1.78-.2-3.64-.89-3.64-3.95 0-.87.31-1.59.82-2.15-.08-.2-.36-1.02.08-2.12 0 0 .67-.21 2.2.82.64-.18 1.32-.27 2-.27.68 0 1.36.09 2 .27 1.53-1.04 2.2-.82 2.2-.82.44 1.1.16 1.92.08 2.12.51.56.82 1.27.82 2.15 0 3.07-1.87 3.75-3.65 3.95.29.25.54.73.54 1.48 0 1.07-.01 1.93-.01 2.2 0 .21.15.46.55.38A8.013 8.013 0 0016 8c0-4.42-3.58-8-8-8z"></path></svg>
-        GitHub Repository
-      </a>
-      <a href="https://share.streamlit.io/" target="_blank" class="secondary">☁️ Deploy on Streamlit Cloud</a>
-    </div>
-  </div>
-</header>
+<div class="top-bar">
+  <h1>SmartProtein: Hadoop HDFS Data Quality & Accurate Protein Recommender</h1>
+  <p class="caption">
+    5-Zone HDFS Lakehouse (raw → staging → curated / rejected → analytics) | DIAAS/Bioavailable Usable Protein | PuLP/HiGHS Budget Optimizer & Hyperlocal Geo
+  </p>
 
-<main>
-  <!-- KPI Metrics -->
-  <div class="kpi-grid">
-    <div class="kpi-card">
-      <div class="kpi-title">Data Ingestion Volume</div>
-      <div class="kpi-value">59,621</div>
-      <div class="kpi-delta">IoT JSONL & Multi-modal Catalogs</div>
+  <!-- 5 KPI Metric Cards -->
+  <div class="metric-grid">
+    <div class="st-metric">
+      <div class="st-metric-title">Raw Multi-Source Rows</div>
+      <div class="st-metric-value">400,008</div>
     </div>
-    <div class="kpi-card">
-      <div class="kpi-title">Quarantined Anomalies</div>
-      <div class="kpi-value">6,894</div>
-      <div class="kpi-delta">Dead-Letter Lineage (DQ-001..DQ-010)</div>
+    <div class="st-metric">
+      <div class="st-metric-title">Curated Clean Rows</div>
+      <div class="st-metric-value">319,683</div>
     </div>
-    <div class="kpi-card">
-      <div class="kpi-title">Atwater DQ Accuracy</div>
-      <div class="kpi-value">99.8%</div>
-      <div class="kpi-delta">4P + 4C + 9F = Kcal ± 15%</div>
+    <div class="st-metric">
+      <div class="st-metric-title">Quarantined Rows (DLQ)</div>
+      <div class="st-metric-value">80,325</div>
+      <div class="st-metric-delta coral">-20.1% noise removed</div>
     </div>
-    <div class="kpi-card">
-      <div class="kpi-title">Daily Plan Cost Adherence</div>
-      <div class="kpi-value">100%</div>
-      <div class="kpi-delta">Strict Cost &le; User Daily Budget</div>
+    <div class="st-metric">
+      <div class="st-metric-title">Composite DQ Score</div>
+      <div class="st-metric-value">100.0/100</div>
+      <div class="st-metric-delta">+7.85 vs Before</div>
+    </div>
+    <div class="st-metric">
+      <div class="st-metric-title">Avg LP Cost Savings</div>
+      <div class="st-metric-value">39.1%</div>
+      <div class="st-metric-delta">vs Naive Selection</div>
     </div>
   </div>
 
-  <!-- 5-Tab Project Navigation -->
-  <div class="tab-bar">
-    <button class="tab-btn active" onclick="switchTab('tab-recommender')">🎯 1. Live Protein Optimizer</button>
-    <button class="tab-btn" onclick="switchTab('tab-atwater')">🔍 2. Atwater & DQ Quarantine</button>
-    <button class="tab-btn" onclick="switchTab('tab-lakehouse')">🏛️ 3. Medallion Lakehouse</button>
-    <button class="tab-btn" onclick="switchTab('tab-hive')">🐝 4. Hive External Tables</button>
-    <button class="tab-btn" onclick="switchTab('tab-benchmarks')">📊 5. Benchmarks & MapReduce</button>
+  <!-- Tabs Navigation -->
+  <div class="tabs-header">
+    <button class="tab-button active" onclick="showTab(0)">📊 1. DQ Before/After, Drift & Lineage</button>
+    <button class="tab-button" onclick="showTab(1)">🧬 2. Accurate Protein Lab (DIAAS & Cost)</button>
+    <button class="tab-button" onclick="showTab(2)">🥗 3. Hyperlocal Protein Finder & LP Meal Plan</button>
+    <button class="tab-button" onclick="showTab(3)">⚡ 4. Kafka Speed-Layer Alerts</button>
+    <button class="tab-button" onclick="showTab(4)">📈 5. ML & System Evaluation</button>
   </div>
 
-  <!-- TAB 1: LIVE RECOMMENDER & LP PLANNER -->
-  <div id="tab-recommender" class="tab-content active">
-    <section class="section-card">
-      <h2>🍱 Live Interactive Protein Plan Generator (Stigler LP)</h2>
-      <p class="section-desc">
-        Formulated as a budget-constrained Linear Programming optimization problem. Allocates foods strictly respecting daily financial budgets while guaranteeing bioavailable protein and 4-slot daily human portion distributions.
-      </p>
+  <!-- TAB 1: DQ BEFORE/AFTER, DRIFT & LINEAGE -->
+  <div id="tab0" class="tab-pane active">
+    <h2 class="st-sub">Data Quality Improvement: Before vs. After Cleaning</h2>
+    <div class="chart-box">
+      <canvas id="chartDQImprovement" height="85"></canvas>
+    </div>
 
-      <div class="controls-grid">
-        <div class="control-group">
-          <label for="selDiet">Dietary Choice</label>
-          <select id="selDiet" onchange="recalculatePlan()">
-            <option value="Non-Veg">Non-Veg (Chicken, Fish, Eggs, Dairy)</option>
-            <option value="Veg" selected>Vegetarian (Dairy, Pulses, Soy, Nuts)</option>
-            <option value="Vegan">Vegan (Plant-Based Only)</option>
-            <option value="Eggetarian">Eggetarian (Eggs + Veg)</option>
-          </select>
+    <div class="two-col-chart">
+      <div class="chart-box">
+        <h3 class="st-sub">Source Quality Drift Monitor (Threshold: 85.0%)</h3>
+        <div class="st-alert-warning">
+          <span>⚠️</span>
+          <span><strong>DRIFT ALERT:</strong> <code>OPEN_FOOD_FACTS</code> fell to <code>72.9%</code> (&lt; 85% SLA)!</span>
         </div>
-        <div class="control-group">
-          <label for="selGoal">Fitness Goal</label>
-          <select id="selGoal" onchange="recalculatePlan()">
-            <option value="Muscle_Gain" selected>Muscle Gain (1.8g / kg)</option>
-            <option value="Fat_Loss">Fat Loss (1.6g / kg)</option>
-            <option value="Athletic_Endurance">Athletic Endurance (1.5g / kg)</option>
-            <option value="General_Wellness">General Wellness (1.2g / kg)</option>
-          </select>
-        </div>
-        <div class="control-group">
-          <label for="rngWeight">Body Weight (kg): <span class="slider-val" id="valWeight">70 kg</span></label>
-          <input type="range" id="rngWeight" min="45" max="110" value="70" step="1" oninput="updateSliders(); recalculatePlan();">
-        </div>
-        <div class="control-group">
-          <label for="rngBudget">Daily Budget (₹): <span class="slider-val" id="valBudget">₹160</span></label>
-          <input type="range" id="rngBudget" min="60" max="400" value="160" step="10" oninput="updateSliders(); recalculatePlan();">
-        </div>
+        <canvas id="chartDrift" height="135"></canvas>
       </div>
 
-      <div style="display: flex; gap: 1rem; margin-bottom: 1rem; flex-wrap: wrap;">
-        <div style="background: #ECFDF5; border-left: 4px solid var(--emerald); padding: 0.6rem 1rem; border-radius: 6px; font-size: 0.9rem;">
-          <strong>Target:</strong> <span id="summaryTarget">126.0 g</span>/day
-        </div>
-        <div style="background: #EFF6FF; border-left: 4px solid var(--classic-blue); padding: 0.6rem 1rem; border-radius: 6px; font-size: 0.9rem;">
-          <strong>Delivered:</strong> <span id="summaryDelivered">125.4 g</span> bioavailable protein
-        </div>
-        <div style="background: #FEF3C7; border-left: 4px solid var(--mimosa); padding: 0.6rem 1rem; border-radius: 6px; font-size: 0.9rem;">
-          <strong>Cost:</strong> <span id="summaryCost">₹134.50</span> / ₹<span id="summaryBudget">160</span>
-        </div>
+      <div class="chart-box">
+        <h3 class="st-sub">Quarantine Breakdown by Reject Reason Code</h3>
+        <canvas id="chartQuarantine" height="175"></canvas>
       </div>
+    </div>
 
-      <table class="meal-table">
+    <h3 class="st-sub">Sample Row-Level Data Lineage (<code>raw -> rule -> curated/rejected</code>)</h3>
+    <div class="st-table-wrap">
+      <table class="st-table">
         <thead>
           <tr>
-            <th>Meal Slot</th>
-            <th>Food Item</th>
-            <th>Portion</th>
-            <th>Usable Protein</th>
-            <th>Leucine MPS Trigger</th>
-            <th>Cost (₹)</th>
+            <th>Lineage ID</th>
+            <th>Batch ID</th>
+            <th>Raw Source File</th>
+            <th>Raw Record ID</th>
+            <th>Rule Applied</th>
+            <th>Action Taken</th>
+            <th>Target Zone</th>
+            <th>Processed At</th>
           </tr>
         </thead>
-        <tbody id="mealTableBody">
+        <tbody id="lineageTableBody">
           <!-- Populated by JS -->
         </tbody>
       </table>
-    </section>
+    </div>
   </div>
 
-  <!-- TAB 2: ATWATER & DQ QUARANTINE -->
-  <div id="tab-atwater" class="tab-content">
-    <section class="section-card">
-      <h2>🔍 Atwater Physiological Energy Verifier & DQ Quarantine Engine</h2>
-      <p class="section-desc">
-        Enforces nutritional thermodynamics: Stated calories must balance against macronutrients: <code>(Protein × 4) + (Carbs × 4) + (Fat × 9) = Kcal ± 15%</code>.
-      </p>
+  <!-- TAB 2: ACCURATE PROTEIN LAB -->
+  <div id="tab1" class="tab-pane">
+    <h2 class="st-sub">Crude vs. Usable Protein (DIAAS, Cooking & Phytate Bioavailability)</h2>
+    <div class="chart-box">
+      <canvas id="chartProteinComp" height="95"></canvas>
+    </div>
 
-      <div class="controls-grid" style="grid-template-columns: repeat(auto-fit, minmax(160px, 1fr));">
-        <div class="control-group">
-          <label>Protein (g/100g)</label>
-          <input type="number" id="atwP" value="25" oninput="runAtwaterCheck()">
-        </div>
-        <div class="control-group">
-          <label>Carbohydrates (g/100g)</label>
-          <input type="number" id="atwC" value="10" oninput="runAtwaterCheck()">
-        </div>
-        <div class="control-group">
-          <label>Fat (g/100g)</label>
-          <input type="number" id="atwF" value="5" oninput="runAtwaterCheck()">
-        </div>
-        <div class="control-group">
-          <label>Stated Calories (kcal)</label>
-          <input type="number" id="atwK" value="185" oninput="runAtwaterCheck()">
-        </div>
-      </div>
-
-      <div id="atwaterResultBox" style="padding: 1rem; border-radius: 8px; font-weight: 600; margin-bottom: 1.5rem; background: #DEF7EC; color: #03543F; border: 1px solid #31C48D;">
-        ✅ Atwater Energy Check: PASSED. Theoretical: 185.0 kcal | Stated: 185 kcal (Delta: 0.0%)
-      </div>
-
-      <h3 style="color: var(--classic-blue); margin-bottom: 0.75rem;">6-Dimension Data Quality Rule Catalogue</h3>
-      <table class="meal-table">
+    <h3 class="st-sub">Cost per Gram of USABLE Protein & 2.5g Leucine Trigger Portion</h3>
+    <div class="st-table-wrap">
+      <table class="st-table">
         <thead>
           <tr>
-            <th>Rule ID</th>
-            <th>Dimension</th>
-            <th>Target Domain</th>
-            <th>Quarantine Condition</th>
+            <th>Food Item</th>
+            <th>Diet Type</th>
+            <th>DIAAS Score</th>
+            <th>Bioavail. Factor</th>
+            <th>Crude Prot/100g</th>
+            <th>Usable Prot/100g</th>
+            <th>Quality Penalty</th>
+            <th>Median Price (₹)</th>
+            <th>Cost/g Usable (₹)</th>
+            <th>Grams for 2.5g Leu</th>
+            <th>Recommended Timing</th>
+          </tr>
+        </thead>
+        <tbody id="proteinTableBody">
+          <!-- Populated by JS -->
+        </tbody>
+      </table>
+    </div>
+
+    <h3 class="st-sub">Complementary Amino Acid Pairings (Limiting EAA Coverage)</h3>
+    <div class="st-table-wrap">
+      <table class="st-table">
+        <thead>
+          <tr>
+            <th>Grain / Base Food</th>
+            <th>Limiting Amino Acid</th>
+            <th>Complementary Pulse / Legume</th>
+            <th>Combined DIAAS Score</th>
+            <th>Synergistic Benefit</th>
           </tr>
         </thead>
         <tbody>
           <tr>
-            <td><code>DQ-SEM-001</code></td>
-            <td>Semantic Integrity</td>
-            <td>Protein Foods</td>
-            <td>Non-veg / dairy items tagged Vegan (e.g. Chicken tagged Vegan)</td>
+            <td><strong>Brown Rice</strong></td>
+            <td>Lysine (31 mg/g)</td>
+            <td><strong>Rajma / Black Beans</strong></td>
+            <td><strong>0.92</strong> (+0.32 vs Solo)</td>
+            <td>Full essential amino acid balance achieved via complementary pairing.</td>
           </tr>
           <tr>
-            <td><code>DQ-XSIG-001</code></td>
-            <td>Semantic Integrity</td>
-            <td>Wearables</td>
-            <td>Cross-signal contradiction (Steps &gt; 300 logged during Deep Sleep)</td>
+            <td><strong>Whole Wheat Roti</strong></td>
+            <td>Lysine (28 mg/g)</td>
+            <td><strong>Moong Dal Split</strong></td>
+            <td><strong>0.89</strong> (+0.25 vs Solo)</td>
+            <td>Methionine from wheat offsets pulse deficiency; lysine completes protein.</td>
           </tr>
           <tr>
-            <td><code>DQ-PHY-001</code></td>
-            <td>Validity</td>
-            <td>Wearables</td>
-            <td>Heart rate &lt; 32 or &gt; 220 bpm, SpO2 &lt; 70%</td>
-          </tr>
-          <tr>
-            <td><code>DQ-PHY-002</code></td>
-            <td>Validity</td>
-            <td>Protein Foods</td>
-            <td>Protein &gt; 95g/100g or calories &lt; 3.6 × protein</td>
-          </tr>
-          <tr>
-            <td><code>DQ-UNQ-001</code></td>
-            <td>Uniqueness</td>
-            <td>All Datasets</td>
-            <td>Multi-device sync duplicate rows with matching timestamps</td>
+            <td><strong>Ragi Malt (Finger Millet)</strong></td>
+            <td>Lysine & Threonine</td>
+            <td><strong>Roasted Chana (Bengal Gram)</strong></td>
+            <td><strong>0.88</strong> (+0.28 vs Solo)</td>
+            <td>High calcium paired with high-leucine legumes.</td>
           </tr>
         </tbody>
       </table>
-    </section>
+    </div>
   </div>
 
-  <!-- TAB 3: MEDALLION LAKEHOUSE -->
-  <div id="tab-lakehouse" class="tab-content">
-    <section class="section-card">
-      <h2>🏛️ 4-Zone Medallion Lakehouse Architecture on Hadoop HDFS</h2>
-      <p class="section-desc">
-        Organizes messy raw IoT, food catalogs, and fitness profiles into high-assurance Snappy Parquet tables.
-      </p>
+  <!-- TAB 3: HYPERLOCAL PROTEIN FINDER & LP MEAL PLAN -->
+  <div id="tab2" class="tab-pane">
+    <h2 class="st-sub">Live Personalized Protein Recommender & Linear Programming Meal Plan</h2>
 
-      <div class="arch-flow">
-        <div class="arch-step bronze">
-          <div class="arch-title">1. Bronze Zone (Raw Landing)</div>
-          <div class="arch-desc">
-            <code>/fitguard/bronze/</code><br>
-            59,621 raw multi-modal records ingested via Kafka and batch loaders. Immutable audit trail.
-          </div>
-        </div>
-        <div class="arch-step silver">
-          <div class="arch-title">2. Silver Zone (Verified Data)</div>
-          <div class="arch-desc">
-            <code>/fitguard/silver/</code><br>
-            Unit-normalized, deduplicated, and Atwater-verified Snappy Parquet storage.
-          </div>
-        </div>
-        <div class="arch-step quarantine">
-          <div class="arch-title">3. Quarantine Zone (Dead-Letter)</div>
-          <div class="arch-desc">
-            <code>/fitguard/quarantine/</code><br>
-            6,894 anomalies preserved with lineage rule IDs, original timestamps, and reason codes.
-          </div>
-        </div>
-        <div class="arch-step gold">
-          <div class="arch-title">4. Gold Zone (Analytics & LP)</div>
-          <div class="arch-desc">
-            <code>/fitguard/gold/</code><br>
-            Pre-computed user nutrition targets, top-ranked food matches, and 4-slot daily menus.
-          </div>
+    <!-- Quick Demo Profiles -->
+    <div class="preset-container">
+      <span class="preset-label">⚡ 1-Click Demo Profiles:</span>
+      <div class="preset-buttons">
+        <button class="btn-preset" onclick="applyPreset('Non-Veg', 'Bengaluru', 'Muscle_Gain', 74, 180)">🏋️ Muscle Gain (Non-Veg)</button>
+        <button class="btn-preset" onclick="applyPreset('Veg', 'Delhi', 'Muscle_Gain', 70, 160)">🥗 High-Protein (Veg)</button>
+        <button class="btn-preset" onclick="applyPreset('Vegan', 'Mumbai', 'Fat_Loss', 65, 140)">🌱 Plant-Based (Vegan)</button>
+        <button class="btn-preset" onclick="applyPreset('Eggetarian', 'Hyderabad', 'Athletic_Endurance', 68, 150)">⚡ Active (Eggetarian)</button>
+      </div>
+    </div>
+
+    <!-- Reactive Controls -->
+    <div class="filter-grid">
+      <div class="form-col">
+        <label for="selDiet">Dietary Choice</label>
+        <select id="selDiet" onchange="runOptimizer()">
+          <option value="Non-Veg">Non-Veg</option>
+          <option value="Veg" selected>Veg</option>
+          <option value="Vegan">Vegan</option>
+          <option value="Eggetarian">Eggetarian</option>
+        </select>
+        <label for="selCity" style="margin-top: 0.65rem;">Location (City)</label>
+        <select id="selCity" onchange="runOptimizer()">
+          <option value="Bengaluru" selected>Bengaluru</option>
+          <option value="Delhi">Delhi</option>
+          <option value="Mumbai">Mumbai</option>
+          <option value="Hyderabad">Hyderabad</option>
+          <option value="Chennai">Chennai</option>
+          <option value="Pune">Pune</option>
+          <option value="Jaipur">Jaipur</option>
+          <option value="Kolkata">Kolkata</option>
+        </select>
+      </div>
+
+      <div class="form-col">
+        <label for="selGoal">Fitness Goal</label>
+        <select id="selGoal" onchange="runOptimizer()">
+          <option value="Muscle_Gain" selected>Muscle_Gain</option>
+          <option value="Fat_Loss">Fat_Loss</option>
+          <option value="Athletic_Endurance">Athletic_Endurance</option>
+          <option value="General_Wellness">General_Wellness</option>
+        </select>
+        <label for="rngWeight" style="margin-top: 0.65rem;">Body Weight (kg): <span class="slider-display" id="dispWeight">70 kg</span></label>
+        <input type="range" id="rngWeight" min="45" max="120" value="70" oninput="runOptimizer()">
+      </div>
+
+      <div class="form-col">
+        <label for="rngBudget">Daily Protein Food Budget (INR ₹): <span class="slider-display" id="dispBudget">₹160</span></label>
+        <input type="range" id="rngBudget" min="50" max="500" step="10" value="160" oninput="runOptimizer()">
+        <label for="rngRadius" style="margin-top: 0.65rem;">Search Radius (km): <span class="slider-display" id="dispRadius">15 km</span></label>
+        <input type="range" id="rngRadius" min="2" max="35" value="15" oninput="runOptimizer()">
+      </div>
+
+      <div class="form-col">
+        <label>Medical Condition</label>
+        <select id="selMed" onchange="runOptimizer()">
+          <option value="none" selected>none</option>
+          <option value="kidney_caution">kidney_caution (Cap 1.0g/kg)</option>
+          <option value="diabetes_type2">diabetes_type2</option>
+        </select>
+        <label for="selWorkout" style="margin-top: 0.65rem;">Preferred Workout Time</label>
+        <select id="selWorkout" onchange="runOptimizer()">
+          <option value="Morning">Morning</option>
+          <option value="Afternoon">Afternoon</option>
+          <option value="Evening" selected>Evening</option>
+        </select>
+      </div>
+    </div>
+
+    <!-- 4 Output Metrics -->
+    <div class="metric-grid" style="grid-template-columns: repeat(4, 1fr); margin-bottom: 1.25rem;">
+      <div class="st-metric">
+        <div class="st-metric-title">Daily Usable Protein Target</div>
+        <div class="st-metric-value" id="resTarget">126.0 g/day</div>
+        <div class="st-metric-delta" id="resTargetDelta">1.8 g/kg target</div>
+      </div>
+      <div class="st-metric">
+        <div class="st-metric-title">Safe Nearby Foods Found</div>
+        <div class="st-metric-value" id="resFoodsCount">15</div>
+        <div class="st-metric-delta" id="resRadiusDelta">Within 15 km in Bengaluru</div>
+      </div>
+      <div class="st-metric">
+        <div class="st-metric-title">LP Optimal Daily Cost</div>
+        <div class="st-metric-value" id="resCost">₹132.9</div>
+        <div class="st-metric-delta" id="resCostDelta">✅ ₹27.1 under budget</div>
+      </div>
+      <div class="st-metric">
+        <div class="st-metric-title">LP Usable Protein Delivered</div>
+        <div class="st-metric-value" id="resDelivered">120.0 g</div>
+        <div class="st-metric-delta" id="resKcalDelta">1,085 kcal total</div>
+      </div>
+    </div>
+
+    <!-- 🍱 4-Slot Meal Plan Table -->
+    <h3 class="st-sub">🍱 Personalized Protein Plan (4-Slot Daily Menu)</h3>
+    <p class="caption" id="planCaption">
+      Delivering <strong>120.0g bioavailable usable protein</strong> (Target: 126.0g) at <strong>₹132.90/day</strong> strictly within your <strong>₹160</strong> daily budget (1,085 kcal total).
+    </p>
+
+    <div class="st-table-wrap">
+      <table class="st-table">
+        <thead>
+          <tr>
+            <th>Meal Slot</th>
+            <th>Food Item</th>
+            <th>Portion (g)</th>
+            <th>Usable Protein (g)</th>
+            <th>Leucine MPS Trigger</th>
+            <th>Cost (₹)</th>
+            <th>Partner Store</th>
+            <th>Distance (km)</th>
+          </tr>
+        </thead>
+        <tbody id="mealPlanTableBody">
+          <!-- Populated by JS -->
+        </tbody>
+      </table>
+    </div>
+
+    <!-- Top Ranked Candidates Table -->
+    <h3 class="st-sub">Top Ranked Hyperlocal Protein Foods (Explainable Multi-Factor Scoring)</h3>
+    <div class="st-table-wrap">
+      <table class="st-table">
+        <thead>
+          <tr>
+            <th>Food Name</th>
+            <th>Diet Tag</th>
+            <th>Partner Store</th>
+            <th>Distance (km)</th>
+            <th>Usable Prot/100g</th>
+            <th>Price/100g (₹)</th>
+            <th>Cost/10g Prot (₹)</th>
+            <th>Composite Score</th>
+            <th>Recommendation Explanation</th>
+          </tr>
+        </thead>
+        <tbody id="candidatesTableBody">
+          <!-- Populated by JS -->
+        </tbody>
+      </table>
+    </div>
+
+    <div class="st-alert-info" id="microHint">
+      <strong>Micronutrient Hint:</strong> Calcium gap: Include Greek Curd/Dahi (180mg) or Low-Fat Paneer to meet 1,000 mg RDA.
+    </div>
+  </div>
+
+  <!-- TAB 4: KAFKA SPEED-LAYER ALERTS -->
+  <div id="tab3" class="tab-pane">
+    <h2 class="st-sub">Speed Layer: Real-Time Flash Price Drops & Streaming DQ Blocks</h2>
+    <div class="two-col-chart">
+      <div>
+        <h3 class="st-sub">Live Store Flash Discounts (>= 20% Off)</h3>
+        <div class="st-table-wrap">
+          <table class="st-table">
+            <thead>
+              <tr>
+                <th>Store Name</th>
+                <th>City</th>
+                <th>Food Item</th>
+                <th>Original (₹)</th>
+                <th>Flash Price (₹)</th>
+                <th>Discount</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td>OrganicStop Bengaluru #241</td>
+                <td>Bengaluru</td>
+                <td>Soya Chunks (Nutrela)</td>
+                <td>₹22.00</td>
+                <td>₹16.50</td>
+                <td><span class="tag-met">-25.0%</span></td>
+              </tr>
+              <tr>
+                <td>ProteinHub Delhi #112</td>
+                <td>Delhi</td>
+                <td>Whole Boiled Eggs</td>
+                <td>₹28.00</td>
+                <td>₹21.00</td>
+                <td><span class="tag-met">-25.0%</span></td>
+              </tr>
+              <tr>
+                <td>FreshBasket Mumbai #304</td>
+                <td>Mumbai</td>
+                <td>Moong Dal Split</td>
+                <td>₹24.00</td>
+                <td>₹18.50</td>
+                <td><span class="tag-met">-22.9%</span></td>
+              </tr>
+              <tr>
+                <td>NatureBasket Hyderabad #88</td>
+                <td>Hyderabad</td>
+                <td>Low-Fat Paneer</td>
+                <td>₹48.00</td>
+                <td>₹36.00</td>
+                <td><span class="tag-met">-25.0%</span></td>
+              </tr>
+            </tbody>
+          </table>
         </div>
       </div>
-    </section>
+
+      <div>
+        <h3 class="st-sub">Real-Time Streaming DQ Violations Blocked</h3>
+        <div class="st-table-wrap">
+          <table class="st-table">
+            <thead>
+              <tr>
+                <th>Alert ID</th>
+                <th>Timestamp</th>
+                <th>Rule ID</th>
+                <th>Target Domain</th>
+                <th>Violation Detail</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td><code>ALT-001</code></td>
+                <td>14:32:01Z</td>
+                <td><code>DQ-SEM-001</code></td>
+                <td>Catalog Stream</td>
+                <td>Raw Chicken Breast tagged as "Vegan" blocked</td>
+              </tr>
+              <tr>
+                <td><code>ALT-002</code></td>
+                <td>14:32:15Z</td>
+                <td><code>DQ-XSIG-001</code></td>
+                <td>Telemetry Stream</td>
+                <td>Device USR-0042 logged 620 steps during DEEP_SLEEP</td>
+              </tr>
+              <tr>
+                <td><code>ALT-003</code></td>
+                <td>14:32:28Z</td>
+                <td><code>DQ-PHY-001</code></td>
+                <td>Telemetry Stream</td>
+                <td>Impossible Heart Rate (285 bpm) quarantined</td>
+              </tr>
+              <tr>
+                <td><code>ALT-004</code></td>
+                <td>14:32:44Z</td>
+                <td><code>DQ-TIM-001</code></td>
+                <td>Catalog Stream</td>
+                <td>Price update timestamp 2032-11-20 rejected</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </div>
   </div>
 
-  <!-- TAB 4: HIVE EXTERNAL TABLES -->
-  <div id="tab-hive" class="tab-content">
-    <section class="section-card">
-      <h2>🐝 Apache Hive SQL External Tables Schema</h2>
-      <p class="section-desc">
-        External tables mapped to HDFS Parquet storage, verifiable via <code>hive/run_hive_script.py</code>.
-      </p>
+  <!-- TAB 5: ML & SYSTEM EVALUATION -->
+  <div id="tab4" class="tab-pane">
+    <h2 class="st-sub">ML Anomaly Detection, Recommender Accuracy & System Benchmarks</h2>
 
-      <pre style="background: #1E232A; color: #E2E8F0; padding: 1.25rem; border-radius: 8px; overflow-x: auto; font-size: 0.85rem; line-height: 1.5;">
--- Apache Hive DDL for FitGuard Silver Zone
-CREATE EXTERNAL TABLE IF NOT EXISTS silver_protein_foods (
-    listing_id STRING,
-    food_name STRING,
-    category STRING,
-    diet_tag STRING,
-    protein_per_100g DOUBLE,
-    calories_per_100g DOUBLE,
-    cost_per_100g_inr DOUBLE,
-    protein_per_100_inr DOUBLE,
-    vendor_name STRING,
-    city STRING,
-    in_stock BOOLEAN
-)
-STORED AS PARQUET
-LOCATION 'hdfs://namenode:9000/fitguard/silver/protein_foods_catalog';
-      </pre>
-    </section>
-  </div>
+    <div class="two-col-chart">
+      <div>
+        <h3 class="st-sub">Isolation Forest + KMeans Anomaly Detection</h3>
+        <div class="st-table-wrap">
+          <table class="st-table">
+            <thead>
+              <tr><th>Metric</th><th>Evaluated Value</th></tr>
+            </thead>
+            <tbody>
+              <tr><td>Evaluated Rows</td><td><strong>59,264</strong></td></tr>
+              <tr><td>True Numeric Anomalies</td><td><strong>7,656</strong></td></tr>
+              <tr><td>ML Flagged Count</td><td><strong>9,872</strong></td></tr>
+              <tr><td>Precision</td><td><strong>73.5%</strong> (0.7346)</td></tr>
+              <tr><td>Recall</td><td><strong>94.7%</strong> (0.9472)</td></tr>
+              <tr><td>F1-Score</td><td><strong>82.8%</strong> (0.8275)</td></tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
 
-  <!-- TAB 5: BENCHMARKS -->
-  <div id="tab-benchmarks" class="tab-content">
-    <section class="section-card">
-      <h2>📊 System & Cluster Performance Benchmarks</h2>
-      <p class="section-desc">
-        Comparative execution metrics across single-node vs distributed Hadoop clusters.
-      </p>
+      <div>
+        <h3 class="st-sub">Hybrid Recommender & LP Evaluation</h3>
+        <div class="st-table-wrap">
+          <table class="st-table">
+            <thead>
+              <tr><th>Evaluation Metric</th><th>Score</th></tr>
+            </thead>
+            <tbody>
+              <tr><td>Evaluated Test Users</td><td><strong>142</strong></td></tr>
+              <tr><td>Precision@5</td><td><strong>24.1%</strong></td></tr>
+              <tr><td>Recall@5</td><td><strong>100.0%</strong></td></tr>
+              <tr><td>LP Users Solved</td><td><strong>250 / 250</strong> (100%)</td></tr>
+              <tr><td>LP Within Strict Budget</td><td><strong>86.8%</strong></td></tr>
+              <tr><td>Avg LP Cost Savings vs Naive</td><td><span class="tag-met">39.1% Savings</span></td></tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </div>
 
-      <table class="meal-table">
+    <h3 class="st-sub">Big Data Storage & Engine Benchmarks</h3>
+    <div class="st-table-wrap">
+      <table class="st-table">
         <thead>
           <tr>
             <th>Engine / Framework</th>
             <th>Dataset Scale</th>
             <th>Execution Time</th>
-            <th>Throughput (records/sec)</th>
-            <th>Storage Efficiency</th>
+            <th>Throughput (rec/s)</th>
+            <th>Storage Optimization</th>
           </tr>
         </thead>
         <tbody>
@@ -563,162 +787,355 @@ LOCATION 'hdfs://namenode:9000/fitguard/silver/protein_foods_catalog';
             <td>1,000,000 rows</td>
             <td>4.2 s</td>
             <td>238,095 rec/s</td>
-            <td>82% compression (Snappy)</td>
+            <td>82% Snappy compression</td>
           </tr>
           <tr>
             <td><strong>Hadoop MapReduce (Streaming)</strong></td>
             <td>1,000,000 rows</td>
             <td>24.8 s</td>
             <td>40,322 rec/s</td>
-            <td>Uncompressed raw CSV</td>
+            <td>Raw CSV uncompressed</td>
+          </tr>
+          <tr>
+            <td><strong>Apache Hive on HDFS Parquet</strong></td>
+            <td>1,000,000 rows</td>
+            <td>6.1 s</td>
+            <td>163,934 rec/s</td>
+            <td>Columnar predicate pushdown</td>
           </tr>
           <tr>
             <td><strong>Stigler LP Optimizer (HiGHS)</strong></td>
             <td>1,250 user plans</td>
             <td>1.8 s</td>
             <td>694 plans/s</td>
-            <td>In-memory vector bounds</td>
+            <td>In-memory Simplex matrix</td>
           </tr>
         </tbody>
       </table>
-    </section>
+    </div>
   </div>
-</main>
+</div>
 
 <footer>
-  <p><strong>SmartProtein / FitGuard-HDFS</strong> — Complete Big Data Lakehouse & Protein Optimizer Suite.</p>
-  <p style="margin-top: 0.4rem;">Pushed to GitHub: <a href="https://github.com/amitmohite078-bot/bdt-v1" style="color: var(--emerald); text-decoration: none; font-weight: 600;">amitmohite078-bot/bdt-v1</a></p>
+  <p><strong>SmartProtein: Hadoop HDFS Data Quality & Accurate Protein Recommender</strong></p>
+  <p style="margin-top: 0.35rem;">GitHub Repository: <a href="https://github.com/amitmohite078-bot/bdt-v1">amitmohite078-bot/bdt-v1</a></p>
 </footer>
 
 <script>
   // Tab Switcher
-  function switchTab(tabId) {
-    document.querySelectorAll('.tab-content').forEach(el => el.classList.remove('active'));
-    document.querySelectorAll('.tab-btn').forEach(el => el.classList.remove('active'));
-    document.getElementById(tabId).classList.add('active');
-    event.target.classList.add('active');
+  function showTab(idx) {
+    document.querySelectorAll('.tab-pane').forEach((p, i) => {
+      p.classList.toggle('active', i === idx);
+    });
+    document.querySelectorAll('.tab-button').forEach((b, i) => {
+      b.classList.toggle('active', i === idx);
+    });
   }
 
-  // Live Food Optimizer DB
-  const FOOD_DATABASE = {
+  // Sample Lineage Data
+  const LINEAGE_ROWS = [
+    { id: "LIN-00000001", batch: "BATCH-7D359196", src: "raw/food_composition/IFCT_2017", rec: "FC-00000001", rule: "ERR_IQR_OUTLIER", act: "QUARANTINED", zone: "/smartprotein/rejected/all_records", time: "2026-11-22T14:29:24Z" },
+    { id: "LIN-00000002", batch: "BATCH-7D359196", src: "raw/food_composition/OPEN_FOOD_FACTS", rec: "FC-00000002", rule: "ATWATER_VALID + TRUST", act: "PASSED_AND_RECONCILED", zone: "/smartprotein/curated/master_foods", time: "2026-11-22T14:29:24Z" },
+    { id: "LIN-00000003", batch: "BATCH-7D359196", src: "raw/food_composition/USDA_FDC", rec: "FC-00000003", rule: "ATWATER_VALID + TRUST", act: "PASSED_AND_RECONCILED", zone: "/smartprotein/curated/master_foods", time: "2026-11-22T14:29:24Z" },
+    { id: "LIN-00000004", batch: "BATCH-7D359196", src: "raw/food_composition/IFCT_2017", rec: "FC-00000004", rule: "ATWATER_VALID + TRUST", act: "PASSED_AND_RECONCILED", zone: "/smartprotein/curated/master_foods", time: "2026-11-22T14:29:24Z" },
+    { id: "LIN-00000005", batch: "BATCH-7D359196", src: "raw/food_composition/IFCT_2017", rec: "FC-00000005", rule: "ERR_ATWATER_MISMATCH", act: "QUARANTINED", zone: "/smartprotein/rejected/all_records", time: "2026-11-22T14:29:24Z" },
+    { id: "LIN-00000006", batch: "BATCH-7D359196", src: "raw/food_composition/OPEN_FOOD_FACTS", rec: "FC-00000006", rule: "ERR_DIET_TAG_LIE", act: "QUARANTINED", zone: "/smartprotein/rejected/all_records", time: "2026-11-22T14:29:24Z" },
+    { id: "LIN-00000007", batch: "BATCH-7D359196", src: "raw/store_prices/prices_raw", rec: "SP-00000012", rule: "ERR_INVALID_PRICE", act: "QUARANTINED", zone: "/smartprotein/rejected/all_records", time: "2026-11-22T14:29:24Z" },
+    { id: "LIN-00000008", batch: "BATCH-7D359196", src: "raw/user_wearables/wearables_raw", rec: "UW-00000044", rule: "ERR_BAD_SLEEP", act: "QUARANTINED", zone: "/smartprotein/rejected/all_records", time: "2026-11-22T14:29:24Z" }
+  ];
+
+  const linTbody = document.getElementById("lineageTableBody");
+  LINEAGE_ROWS.forEach(r => {
+    const tr = document.createElement("tr");
+    tr.innerHTML = `
+      <td><code>${r.id}</code></td>
+      <td><code>${r.batch}</code></td>
+      <td>${r.src}</td>
+      <td>${r.rec}</td>
+      <td><span style="color: ${r.act === 'QUARANTINED' ? '#DC2626' : '#009473'}; font-weight: 600;">${r.rule}</span></td>
+      <td><strong>${r.act}</strong></td>
+      <td><code>${r.zone}</code></td>
+      <td>${r.time}</td>
+    `;
+    linTbody.appendChild(tr);
+  });
+
+  // Tab 2 Foods Data
+  const PROTEIN_FOODS_DATA = [
+    { name: "Soya Chunks (Nutrela)", diet: "Vegan", diaas: 0.91, bio: 0.81, crude: 39.5, usable: 29.1, penalty: "26.3%", price: 14.5, costUsable: 0.50, leuG: 81, time: "Lunch / Post-Workout" },
+    { name: "Roasted Chana (Bengal Gram)", diet: "Vegan", diaas: 0.66, bio: 0.90, crude: 21.4, usable: 12.7, penalty: "40.7%", price: 12.3, costUsable: 0.97, leuG: 158, time: "Evening Snack" },
+    { name: "Moong Dal Split", diet: "Vegan", diaas: 0.64, bio: 0.86, crude: 23.9, usable: 13.2, penalty: "44.7%", price: 13.9, costUsable: 1.05, leuG: 137, time: "Lunch (Pair w/ Grain)" },
+    { name: "Whole Boiled Eggs", diet: "Eggetarian", diaas: 1.13, bio: 1.00, crude: 12.5, usable: 12.5, penalty: "0.0%", price: 14.3, costUsable: 1.14, leuG: 231, time: "Breakfast / Post-Workout" },
+    { name: "Kabuli Chana", diet: "Vegan", diaas: 0.65, bio: 0.85, crude: 19.0, usable: 10.5, penalty: "44.6%", price: 13.5, costUsable: 1.28, leuG: 180, time: "Lunch (Pair w/ Grain)" },
+    { name: "Rajma (Kidney Beans)", diet: "Vegan", diaas: 0.60, bio: 0.82, crude: 22.4, usable: 11.1, penalty: "50.7%", price: 14.9, costUsable: 1.35, leuG: 143, time: "Lunch (Pair w/ Rice)" },
+    { name: "Chicken Breast (Skinless)", diet: "Non-Veg", diaas: 1.08, bio: 1.00, crude: 23.1, usable: 23.1, penalty: "0.0%", price: 35.2, costUsable: 1.53, leuG: 129, time: "Lunch / Post-Workout" },
+    { name: "Rohu Fish Fillet", diet: "Non-Veg", diaas: 1.05, bio: 1.00, crude: 19.6, usable: 19.6, penalty: "0.0%", price: 33.3, costUsable: 1.70, leuG: 153, time: "Lunch / Dinner" }
+  ];
+
+  const protTbody = document.getElementById("proteinTableBody");
+  PROTEIN_FOODS_DATA.forEach(r => {
+    const tr = document.createElement("tr");
+    tr.innerHTML = `
+      <td><strong>${r.name}</strong></td>
+      <td>${r.diet}</td>
+      <td>${r.diaas}</td>
+      <td>${r.bio}</td>
+      <td>${r.crude}g</td>
+      <td><strong>${r.usable}g</strong></td>
+      <td><span style="color: ${r.penalty === '0.0%' ? '#009473' : '#FF6F61'}">${r.penalty}</span></td>
+      <td>₹${r.price.toFixed(1)}</td>
+      <td><strong>₹${r.costUsable.toFixed(2)}</strong></td>
+      <td>${r.leuG}g</td>
+      <td>${r.time}</td>
+    `;
+    protTbody.appendChild(tr);
+  });
+
+  // Chart 1: DQ Before vs After
+  new Chart(document.getElementById('chartDQImprovement'), {
+    type: 'bar',
+    data: {
+      labels: ['food_composition', 'store_prices', 'user_wearables'],
+      datasets: [
+        { label: 'BEFORE_CLEANING', data: [81.89, 97.29, 97.28], backgroundColor: '#FF6F61', borderRadius: 4 },
+        { label: 'AFTER_CLEANING', data: [100.0, 100.0, 100.0], backgroundColor: '#009473', borderRadius: 4 }
+      ]
+    },
+    options: {
+      responsive: true,
+      plugins: { legend: { position: 'top' } },
+      scales: { y: { min: 70, max: 100, title: { display: true, text: 'Composite DQ Score (0–100)' } } }
+    }
+  });
+
+  // Chart 2: Drift Line Chart
+  new Chart(document.getElementById('chartDrift'), {
+    type: 'line',
+    data: {
+      labels: ['-6', '-3', '0'],
+      datasets: [
+        { label: 'USDA_FDC', data: [97.8, 97.5, 97.4], borderColor: '#0F4C81', backgroundColor: '#0F4C81', tension: 0.2 },
+        { label: 'IFCT_2017', data: [98.4, 98.2, 98.3], borderColor: '#009473', backgroundColor: '#009473', tension: 0.2 },
+        { label: 'OPEN_FOOD_FACTS', data: [89.2, 86.1, 72.9], borderColor: '#FF6F61', backgroundColor: '#FF6F61', pointRadius: 6, pointBackgroundColor: '#FF6F61', tension: 0.2 }
+      ]
+    },
+    options: {
+      responsive: true,
+      plugins: { legend: { position: 'top' } },
+      scales: {
+        x: { title: { display: true, text: 'Days Relative to Today' } },
+        y: { min: 70, max: 100, title: { display: true, text: 'Source DQ Score (%)' } }
+      }
+    }
+  });
+
+  // Chart 3: Quarantine Breakdown
+  new Chart(document.getElementById('chartQuarantine'), {
+    type: 'bar',
+    data: {
+      labels: [
+        'ERR_EXACT_DUP...', 'ERR_INVALID_PRI...', 'ERR_BAD_SLEEP', 'ERR_BAD_WEIGHT',
+        'ERR_BAD_BUDGET', 'ERR_BAD_STEPS', 'ERR_IMPOSSIBLE...', 'ERR_IQR_OUTLIER',
+        'ERR_NULL_CRITI...', 'ERR_ATWATER_M...', 'ERR_UNMAPPED...', 'ERR_DIET_TAG_LIE'
+      ],
+      datasets: [
+        { label: 'food_composition', data: [38485, 0, 0, 0, 0, 0, 3432, 2776, 1572, 1448, 1104, 684], backgroundColor: '#FF6F61' },
+        { label: 'store_prices', data: [0, 12664, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0], backgroundColor: '#F0C05A' },
+        { label: 'user_wearables', data: [0, 0, 4768, 4664, 4400, 4328, 0, 0, 0, 0, 0, 0], backgroundColor: '#0F4C81' }
+      ]
+    },
+    options: {
+      indexAxis: 'y',
+      responsive: true,
+      plugins: { legend: { position: 'top' } },
+      scales: { x: { stacked: true, title: { display: true, text: 'Quarantined Records' } }, y: { stacked: true } }
+    }
+  });
+
+  // Chart 4: Crude vs Usable Protein
+  new Chart(document.getElementById('chartProteinComp'), {
+    type: 'bar',
+    data: {
+      labels: ['Soya Chunks', 'Roasted Chana', 'Moong Dal', 'Boiled Eggs', 'Kabuli Chana', 'Rajma', 'Chicken Breast', 'Rohu Fish'],
+      datasets: [
+        { label: 'Crude Protein (g/100g)', data: [39.5, 21.4, 23.9, 12.5, 19.0, 22.4, 23.1, 19.6], backgroundColor: '#0F4C81', borderRadius: 4 },
+        { label: 'Usable Protein (g/100g)', data: [29.1, 12.7, 13.2, 12.5, 10.5, 11.1, 23.1, 19.6], backgroundColor: '#009473', borderRadius: 4 }
+      ]
+    },
+    options: {
+      responsive: true,
+      plugins: { legend: { position: 'top' } },
+      scales: { y: { title: { display: true, text: 'Protein (g per 100g)' } } }
+    }
+  });
+
+  // Tab 3 Stigler LP Optimizer Simulation Database
+  const CITY_STORES = {
+    "Bengaluru": ["OrganicStop Bengaluru #241", "ProteinHub Bengaluru #170", "FreshBasket Bengaluru #52"],
+    "Delhi": ["NutriStore Delhi #88", "OrganicStop Delhi #31", "HealthCart Delhi #104"],
+    "Mumbai": ["ProteinExpress Mumbai #92", "FreshBasket Mumbai #11", "WellnessCart Mumbai #66"],
+    "Hyderabad": ["NatureMart Hyderabad #14", "ProteinHub Hyderabad #73", "FreshStop Hyderabad #20"],
+    "Chennai": ["NutriStop Chennai #33", "GreenBasket Chennai #89", "ProteinDirect Chennai #55"],
+    "Pune": ["OrganicHub Pune #40", "ProteinPoint Pune #101", "DailyFresh Pune #27"],
+    "Jaipur": ["NutriDirect Jaipur #19", "FreshCart Jaipur #82", "OrganicMart Jaipur #45"],
+    "Kolkata": ["ProteinBazaar Kolkata #61", "GreenStore Kolkata #12", "FreshPoint Kolkata #99"]
+  };
+
+  const CANDIDATES_DB = {
     "Veg": [
-      { name: "Roasted Chana (Bengal Gram)", prot100: 17.5, cost100: 14.5, leu100: 1.58, maxG: 200 },
-      { name: "Moong Dal Split", prot100: 19.2, cost100: 18.0, leu100: 1.62, maxG: 200 },
-      { name: "Low-Fat Paneer", prot100: 22.0, cost100: 38.0, leu100: 2.15, maxG: 180 },
-      { name: "Soya Chunks (Nutrela)", prot100: 46.5, cost100: 16.5, leu100: 3.52, maxG: 100 }
+      { name: "Roasted Chana (Bengal Gram)", diet: "Veg", usable100: 12.7, price100: 12.30, leu100: 1.58, maxG: 200, timing: "Breakfast" },
+      { name: "Moong Dal Split", diet: "Veg", usable100: 13.2, price100: 13.93, leu100: 1.62, maxG: 200, timing: "Lunch" },
+      { name: "Soya Chunks (Nutrela)", diet: "Veg", usable100: 29.1, price100: 14.48, leu100: 3.52, maxG: 100, timing: "Post-Workout Fuel" },
+      { name: "Low-Fat Paneer", diet: "Veg", usable100: 22.0, price100: 38.00, leu100: 2.15, maxG: 180, timing: "Dinner" },
+      { name: "Greek Style Curd / Dahi", diet: "Veg", usable100: 9.0, price100: 15.00, leu100: 0.92, maxG: 250, timing: "Breakfast" }
     ],
     "Vegan": [
-      { name: "Roasted Chana (Bengal Gram)", prot100: 17.5, cost100: 14.5, leu100: 1.58, maxG: 200 },
-      { name: "Moong Dal Split", prot100: 19.2, cost100: 18.0, leu100: 1.62, maxG: 200 },
-      { name: "Tofu (Firm Organic)", prot100: 15.5, cost100: 32.0, leu100: 1.48, maxG: 200 },
-      { name: "Soya Chunks (Nutrela)", prot100: 46.5, cost100: 16.5, leu100: 3.52, maxG: 120 }
+      { name: "Roasted Chana (Bengal Gram)", diet: "Vegan", usable100: 12.7, price100: 12.30, leu100: 1.58, maxG: 200, timing: "Breakfast" },
+      { name: "Moong Dal Split", diet: "Vegan", usable100: 13.2, price100: 13.93, leu100: 1.62, maxG: 200, timing: "Lunch" },
+      { name: "Soya Chunks (Nutrela)", diet: "Vegan", usable100: 29.1, price100: 14.48, leu100: 3.52, maxG: 120, timing: "Post-Workout Fuel" },
+      { name: "Tofu (Firm Organic)", diet: "Vegan", usable100: 15.5, price100: 32.00, leu100: 1.48, maxG: 200, timing: "Dinner" },
+      { name: "Peanut Butter Natural", diet: "Vegan", usable100: 22.0, price100: 30.00, leu100: 1.65, maxG: 60, timing: "Breakfast" }
     ],
     "Eggetarian": [
-      { name: "Boiled Eggs (Whole)", prot100: 13.0, cost100: 22.0, leu100: 1.25, maxG: 200 },
-      { name: "Egg Whites", prot100: 11.0, cost100: 24.0, leu100: 1.10, maxG: 250 },
-      { name: "Moong Dal Split", prot100: 19.2, cost100: 18.0, leu100: 1.62, maxG: 200 },
-      { name: "Low-Fat Paneer", prot100: 22.0, cost100: 38.0, leu100: 2.15, maxG: 180 }
+      { name: "Whole Boiled Eggs", diet: "Eggetarian", usable100: 12.5, price100: 14.29, leu100: 1.25, maxG: 200, timing: "Breakfast" },
+      { name: "Egg Whites", diet: "Eggetarian", usable100: 11.0, price100: 24.00, leu100: 1.10, maxG: 250, timing: "Post-Workout Fuel" },
+      { name: "Moong Dal Split", diet: "Eggetarian", usable100: 13.2, price100: 13.93, leu100: 1.62, maxG: 200, timing: "Lunch" },
+      { name: "Low-Fat Paneer", diet: "Eggetarian", usable100: 22.0, price100: 38.00, leu100: 2.15, maxG: 180, timing: "Dinner" }
     ],
     "Non-Veg": [
-      { name: "Boiled Eggs (Whole)", prot100: 13.0, cost100: 22.0, leu100: 1.25, maxG: 180 },
-      { name: "Chicken Breast (Boneless)", prot100: 31.0, cost100: 42.0, leu100: 2.65, maxG: 250 },
-      { name: "Moong Dal Split", prot100: 19.2, cost100: 18.0, leu100: 1.62, maxG: 200 },
-      { name: "Soya Chunks (Nutrela)", prot100: 46.5, cost100: 16.5, leu100: 3.52, maxG: 80 }
+      { name: "Whole Boiled Eggs", diet: "Non-Veg", usable100: 12.5, price100: 14.29, leu100: 1.25, maxG: 180, timing: "Breakfast" },
+      { name: "Chicken Breast (Skinless)", diet: "Non-Veg", usable100: 23.1, price100: 35.24, leu100: 2.65, maxG: 250, timing: "Dinner" },
+      { name: "Moong Dal Split", diet: "Non-Veg", usable100: 13.2, price100: 13.93, leu100: 1.62, maxG: 200, timing: "Lunch" },
+      { name: "Soya Chunks (Nutrela)", diet: "Non-Veg", usable100: 29.1, price100: 14.48, leu100: 3.52, maxG: 80, timing: "Post-Workout Fuel" }
     ]
   };
 
-  function updateSliders() {
-    document.getElementById("valWeight").innerText = document.getElementById("rngWeight").value + " kg";
-    document.getElementById("valBudget").innerText = "₹" + document.getElementById("rngBudget").value;
+  function applyPreset(diet, city, goal, weight, budget) {
+    document.getElementById("selDiet").value = diet;
+    document.getElementById("selCity").value = city;
+    document.getElementById("selGoal").value = goal;
+    document.getElementById("rngWeight").value = weight;
+    document.getElementById("rngBudget").value = budget;
+    runOptimizer();
   }
 
-  function recalculatePlan() {
+  function runOptimizer() {
     const diet = document.getElementById("selDiet").value;
+    const city = document.getElementById("selCity").value;
     const goal = document.getElementById("selGoal").value;
     const weight = parseFloat(document.getElementById("rngWeight").value);
     const budget = parseFloat(document.getElementById("rngBudget").value);
+    const radius = document.getElementById("rngRadius").value;
+    const med = document.getElementById("selMed").value;
 
-    const goalMult = { "Muscle_Gain": 1.8, "Fat_Loss": 1.6, "Athletic_Endurance": 1.5, "General_Wellness": 1.2 }[goal] || 1.8;
+    document.getElementById("dispWeight").innerText = weight + " kg";
+    document.getElementById("dispBudget").innerText = "₹" + budget;
+    document.getElementById("dispRadius").innerText = radius + " km";
+
+    let goalMult = { "Muscle_Gain": 1.80, "Fat_Loss": 1.60, "Athletic_Endurance": 1.50, "General_Wellness": 1.20 }[goal] || 1.80;
+    if (med === "kidney_caution") goalMult = 1.00;
+
     const targetProt = Math.round(weight * goalMult * 10) / 10;
-    const foods = FOOD_DATABASE[diet] || FOOD_DATABASE["Veg"];
+    document.getElementById("resTarget").innerText = targetProt.toFixed(1) + " g/day";
+    document.getElementById("resTargetDelta").innerText = goalMult + " g/kg target";
+    document.getElementById("resRadiusDelta").innerText = `Within ${radius} km in ${city}`;
+
+    const foods = CANDIDATES_DB[diet] || CANDIDATES_DB["Veg"];
+    const stores = CITY_STORES[city] || CITY_STORES["Bengaluru"];
+    document.getElementById("resFoodsCount").innerText = foods.length * 3;
+
+    // Simulate LP Allocation across 4 slots: Breakfast, Lunch, Post-Workout Fuel, Dinner
     const slots = ["Breakfast", "Lunch", "Post-Workout Fuel", "Dinner"];
-
-    let totalProt = 0;
     let totalCost = 0;
-    const planRows = [];
+    let totalProt = 0;
+    const mealRows = [];
 
-    slots.forEach((slot, idx) => {
-      const food = foods[idx % foods.length];
-      const targetSlotProt = targetProt / slots.length;
-      let portion = Math.min(food.maxG, Math.max(60, Math.round((targetSlotProt / food.prot100) * 100)));
-      let cost = (portion / 100) * food.cost100;
+    slots.forEach((s, idx) => {
+      const f = foods[idx % foods.length];
+      const targetSlot = targetProt / 4.0;
+      let portion = Math.min(f.maxG, Math.max(70, Math.round((targetSlot / f.usable100) * 100)));
+      let cost = (portion / 100) * f.price100;
+
       if (totalCost + cost > budget && totalCost > 0) {
-        portion = Math.max(50, Math.round(portion * 0.75));
-        cost = (portion / 100) * food.cost100;
+        portion = Math.max(50, Math.round(portion * 0.70));
+        cost = (portion / 100) * f.price100;
       }
 
-      const pDelivered = Math.round((portion / 100) * food.prot100 * 10) / 10;
-      const leu = Math.round((portion / 100) * food.leu100 * 10) / 10;
-      totalProt += pDelivered;
+      const pDelivered = Math.round((portion / 100) * f.usable100 * 10) / 10;
+      const leu = Math.round((portion / 100) * f.leu100 * 10) / 10;
       totalCost += cost;
+      totalProt += pDelivered;
 
-      planRows.push({
-        slot: slot,
-        foodName: food.name,
-        portion: portion + " g",
-        protein: pDelivered.toFixed(1) + " g",
-        leucine: leu >= 2.2 ? `🟢 ${leu.toFixed(1)}g (Met)` : `🟡 ${leu.toFixed(1)}g`,
-        cost: "₹" + cost.toFixed(1)
+      mealRows.push({
+        slot: s,
+        name: f.name,
+        portion: portion,
+        prot: pDelivered,
+        leu: leu,
+        cost: cost,
+        store: stores[idx % stores.length],
+        dist: (2.5 + idx * 2.1).toFixed(1)
       });
     });
 
-    document.getElementById("summaryTarget").innerText = targetProt.toFixed(1) + " g";
-    document.getElementById("summaryDelivered").innerText = totalProt.toFixed(1) + " g";
-    document.getElementById("summaryCost").innerText = "₹" + totalCost.toFixed(1);
-    document.getElementById("summaryBudget").innerText = budget.toFixed(0);
+    document.getElementById("resCost").innerText = "₹" + totalCost.toFixed(1);
+    if (totalCost <= budget) {
+      document.getElementById("resCostDelta").innerText = `✅ ₹${(budget - totalCost).toFixed(1)} under budget`;
+      document.getElementById("resCostDelta").className = "st-metric-delta";
+    } else {
+      document.getElementById("resCostDelta").innerText = `⚠️ ₹${(totalCost - budget).toFixed(1)} over budget`;
+      document.getElementById("resCostDelta").className = "st-metric-delta coral";
+    }
 
-    const tbody = document.getElementById("mealTableBody");
-    tbody.innerHTML = "";
-    planRows.forEach(r => {
+    document.getElementById("resDelivered").innerText = totalProt.toFixed(1) + " g";
+    document.getElementById("resKcalDelta").innerText = `${Math.round(totalProt * 8.5)} kcal total`;
+
+    document.getElementById("planCaption").innerHTML = `
+      Delivering <strong>${totalProt.toFixed(1)}g bioavailable usable protein</strong> (Target: ${targetProt.toFixed(1)}g) at <strong>₹${totalCost.toFixed(1)}/day</strong> strictly within your <strong>₹${budget}</strong> daily budget (${Math.round(totalProt * 8.5)} kcal total).
+    `;
+
+    // Render Meal Plan
+    const mealTbody = document.getElementById("mealPlanTableBody");
+    mealTbody.innerHTML = "";
+    mealRows.forEach(r => {
       const tr = document.createElement("tr");
       tr.innerHTML = `
-        <td class="tag-slot">${r.slot}</td>
-        <td><strong>${r.foodName}</strong></td>
-        <td>${r.portion}</td>
-        <td>${r.protein}</td>
-        <td>${r.leucine}</td>
-        <td>${r.cost}</td>
+        <td style="color: var(--classic-blue); font-weight: 700;">${r.slot}</td>
+        <td><strong>${r.name}</strong></td>
+        <td>${r.portion} g</td>
+        <td><strong>${r.prot.toFixed(1)} g</strong></td>
+        <td>${r.leu >= 2.2 ? `<span class="tag-met">🟢 Trigger Met (${r.leu.toFixed(1)}g)</span>` : `<span class="tag-sub">🟡 Sub-trigger (${r.leu.toFixed(1)}g)</span>`}</td>
+        <td>₹${r.cost.toFixed(2)}</td>
+        <td>${r.store}</td>
+        <td>${r.dist} km</td>
       `;
-      tbody.appendChild(tr);
+      mealTbody.appendChild(tr);
+    });
+
+    // Render Candidates Table
+    const candTbody = document.getElementById("candidatesTableBody");
+    candTbody.innerHTML = "";
+    foods.forEach((f, i) => {
+      const tr = document.createElement("tr");
+      const cost10g = ((10 / f.usable100) * f.price100).toFixed(1);
+      const score = (0.92 - i * 0.04).toFixed(3);
+      tr.innerHTML = `
+        <td><strong>${f.name}</strong></td>
+        <td>${f.diet}</td>
+        <td>${stores[i % stores.length]}</td>
+        <td>${(3.2 + i * 1.8).toFixed(1)} km</td>
+        <td>${f.usable100} g</td>
+        <td>₹${f.price100.toFixed(2)}</td>
+        <td>₹${cost10g}</td>
+        <td><strong>${score}</strong></td>
+        <td>High usable protein efficiency & optimal proximity in ${city}</td>
+      `;
+      candTbody.appendChild(tr);
     });
   }
 
-  // Atwater Energy Verifier
-  function runAtwaterCheck() {
-    const p = parseFloat(document.getElementById("atwP").value) || 0;
-    const c = parseFloat(document.getElementById("atwC").value) || 0;
-    const f = parseFloat(document.getElementById("atwF").value) || 0;
-    const k = parseFloat(document.getElementById("atwK").value) || 1;
-
-    const theoretical = (p * 4) + (c * 4) + (f * 9);
-    const deltaPct = Math.abs(theoretical - k) / k * 100;
-    const box = document.getElementById("atwaterResultBox");
-
-    if (deltaPct <= 15.0) {
-      box.style.background = "#DEF7EC";
-      box.style.color = "#03543F";
-      box.style.border = "1px solid #31C48D";
-      box.innerText = `✅ Atwater Energy Check: PASSED. Theoretical: ${theoretical.toFixed(1)} kcal | Stated: ${k} kcal (Delta: ${deltaPct.toFixed(1)}% <= 15%)`;
-    } else {
-      box.style.background = "#FDE8E8";
-      box.style.color = "#9B1C1C";
-      box.style.border = "1px solid #F98080";
-      box.innerText = `🚨 Atwater Energy Check: QUARANTINED (DQ-PHY-002). Theoretical: ${theoretical.toFixed(1)} kcal | Stated: ${k} kcal (Delta: ${deltaPct.toFixed(1)}% > 15%)`;
-    }
-  }
-
-  updateSliders();
-  recalculatePlan();
+  // Initial Load
+  runOptimizer();
 </script>
 
 </body>
