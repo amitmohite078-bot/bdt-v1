@@ -1,6 +1,14 @@
-# FitGuard-HDFS: Big Data Quality, Cleaning & Personalized Protein Pipeline on Hadoop HDFS
+# SmartProtein / FitGuard-HDFS: Big Data Quality, Cleaning & Personalized Protein Pipeline on Hadoop HDFS
 
-**FitGuard-HDFS** is an advanced Big Data Technologies (BDT) project implementing a **4-Zone Medallion Lakehouse** (`Bronze → Silver + Quarantine → Gold`) on **Hadoop HDFS**. It ingests messy multi-modal wearable telemetry, user fitness profiles, and regional vendor food catalogs, enforces a **6-Dimension Automated Data Quality (DQ) Engine**, quarantines dangerous/corrupt anomalies with lineage error codes, compacts small files into **Snappy Parquet**, and powers a **Personalized Protein Food Recommendation Engine** filtered by **Dietary Choice, Cost Budget, and City Location**.
+[![Live GitHub Pages](https://img.shields.io/badge/GitHub%20Pages-Live%20Demo-009473?style=for-the-badge&logo=github)](https://amitmohite078-bot.github.io/bdt-v1/)
+[![Deploy to Streamlit](https://static.streamlit.io/badges/streamlit_badge_black_white.svg)](https://share.streamlit.io/deploy?repository=amitmohite078-bot/bdt-v1&branch=main&mainModule=app.py)
+
+**SmartProtein / FitGuard-HDFS** is an advanced Big Data Technologies (BDT) project implementing a **5-Zone Medallion Lakehouse** (`Raw → Staging → Curated / Rejected → Analytics`) on **Hadoop HDFS**. It ingests messy multi-modal wearable telemetry, user fitness profiles, and regional vendor food catalogs, enforces a **6-Dimension Automated Data Quality (DQ) Engine**, quarantines dangerous/corrupt anomalies with lineage error codes, compacts small files into **Snappy Parquet**, and powers a **Personalized Protein Food Recommendation Engine & Stigler LP Meal Planner** filtered by **Dietary Choice, Cost Budget, and City Location**.
+
+### Quick Links
+- 🌐 **Live GitHub Pages Website:** [https://amitmohite078-bot.github.io/bdt-v1/](https://amitmohite078-bot.github.io/bdt-v1/)
+- ☁️ **1-Click Streamlit Cloud Deploy:** [Deploy App on Streamlit Cloud](https://share.streamlit.io/deploy?repository=amitmohite078-bot/bdt-v1&branch=main&mainModule=app.py)
+- 💻 **Run Streamlit Locally:** `streamlit run app.py` (serves `SmartProtein | Hadoop HDFS DQ & Accurate Protein Recommender` on port 8501)
 
 ---
 
