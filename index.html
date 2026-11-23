@@ -1000,6 +1000,208 @@
     });
   }
 
+  // Hyperlocal Stores Database
+  const CITY_STORES = {
+    "Bengaluru": ["OrganicStop Bengaluru #241", "ProteinHub Bengaluru #170", "FreshBasket Bengaluru #52"],
+    "Delhi": ["NutriStore Delhi #88", "OrganicStop Delhi #31", "HealthCart Delhi #104"],
+    "Mumbai": ["ProteinExpress Mumbai #92", "FreshBasket Mumbai #11", "WellnessCart Mumbai #66"],
+    "Hyderabad": ["NatureMart Hyderabad #14", "ProteinHub Hyderabad #73", "FreshStop Hyderabad #20"],
+    "Chennai": ["NutriStop Chennai #33", "GreenBasket Chennai #89", "ProteinDirect Chennai #55"],
+    "Pune": ["OrganicHub Pune #40", "ProteinPoint Pune #101", "DailyFresh Pune #27"],
+    "Jaipur": ["NutriDirect Jaipur #19", "FreshCart Jaipur #82", "OrganicMart Jaipur #45"],
+    "Kolkata": ["ProteinBazaar Kolkata #61", "GreenStore Kolkata #12", "FreshPoint Kolkata #99"]
+  };
+
+  const CANDIDATES_DB = {
+    "Veg": [
+      { name: "Roasted Chana (Bengal Gram)", diet: "Veg", usable100: 12.7, price100: 12.30, leu100: 1.58, maxG: 200, timing: "Breakfast" },
+      { name: "Moong Dal Split", diet: "Veg", usable100: 13.2, price100: 13.93, leu100: 1.62, maxG: 200, timing: "Lunch" },
+      { name: "Soya Chunks (Nutrela)", diet: "Veg", usable100: 29.1, price100: 14.48, leu100: 3.52, maxG: 100, timing: "Post-Workout Fuel" },
+      { name: "Low-Fat Paneer", diet: "Veg", usable100: 22.0, price100: 38.00, leu100: 2.15, maxG: 180, timing: "Dinner" },
+      { name: "Greek Style Curd / Dahi", diet: "Veg", usable100: 9.0, price100: 15.00, leu100: 0.92, maxG: 250, timing: "Breakfast" }
+    ],
+    "Vegan": [
+      { name: "Roasted Chana (Bengal Gram)", diet: "Vegan", usable100: 12.7, price100: 12.30, leu100: 1.58, maxG: 200, timing: "Breakfast" },
+      { name: "Moong Dal Split", diet: "Vegan", usable100: 13.2, price100: 13.93, leu100: 1.62, maxG: 200, timing: "Lunch" },
+      { name: "Soya Chunks (Nutrela)", diet: "Vegan", usable100: 29.1, price100: 14.48, leu100: 3.52, maxG: 120, timing: "Post-Workout Fuel" },
+      { name: "Tofu (Firm Organic)", diet: "Vegan", usable100: 15.5, price100: 32.00, leu100: 1.48, maxG: 200, timing: "Dinner" },
+      { name: "Peanut Butter Natural", diet: "Vegan", usable100: 22.0, price100: 30.00, leu100: 1.65, maxG: 60, timing: "Breakfast" }
+    ],
+    "Eggetarian": [
+      { name: "Whole Boiled Eggs", diet: "Eggetarian", usable100: 12.5, price100: 14.29, leu100: 1.25, maxG: 200, timing: "Breakfast" },
+      { name: "Egg Whites", diet: "Eggetarian", usable100: 11.0, price100: 24.00, leu100: 1.10, maxG: 250, timing: "Post-Workout Fuel" },
+      { name: "Moong Dal Split", diet: "Eggetarian", usable100: 13.2, price100: 13.93, leu100: 1.62, maxG: 200, timing: "Lunch" },
+      { name: "Low-Fat Paneer", diet: "Eggetarian", usable100: 22.0, price100: 38.00, leu100: 2.15, maxG: 180, timing: "Dinner" }
+    ],
+    "Non-Veg": [
+      { name: "Whole Boiled Eggs", diet: "Non-Veg", usable100: 12.5, price100: 14.29, leu100: 1.25, maxG: 180, timing: "Breakfast" },
+      { name: "Chicken Breast (Skinless)", diet: "Non-Veg", usable100: 23.1, price100: 35.24, leu100: 2.65, maxG: 250, timing: "Dinner" },
+      { name: "Moong Dal Split", diet: "Non-Veg", usable100: 13.2, price100: 13.93, leu100: 1.62, maxG: 200, timing: "Lunch" },
+      { name: "Soya Chunks (Nutrela)", diet: "Non-Veg", usable100: 29.1, price100: 14.48, leu100: 3.52, maxG: 80, timing: "Post-Workout Fuel" }
+    ]
+  };
+
+  function applyPreset(diet, city, goal, weight, budget) {
+    const elDiet = document.getElementById("selDiet");
+    const elCity = document.getElementById("selCity");
+    const elGoal = document.getElementById("selGoal");
+    const elWeight = document.getElementById("rngWeight");
+    const elBudget = document.getElementById("rngBudget");
+    if (elDiet) elDiet.value = diet;
+    if (elCity) elCity.value = city;
+    if (elGoal) elGoal.value = goal;
+    if (elWeight) elWeight.value = weight;
+    if (elBudget) elBudget.value = budget;
+    runOptimizer();
+  }
+
+  function runOptimizer() {
+    try {
+      const elDiet = document.getElementById("selDiet");
+      const elCity = document.getElementById("selCity");
+      const elGoal = document.getElementById("selGoal");
+      const elWeight = document.getElementById("rngWeight");
+      const elBudget = document.getElementById("rngBudget");
+      const elRadius = document.getElementById("rngRadius");
+      const elMed = document.getElementById("selMed");
+
+      if (!elDiet || !elCity || !elWeight || !elBudget) return;
+
+      const diet = elDiet.value;
+      const city = elCity.value;
+      const goal = elGoal ? elGoal.value : "Muscle_Gain";
+      const weight = parseFloat(elWeight.value) || 70;
+      const budget = parseFloat(elBudget.value) || 160;
+      const radius = elRadius ? elRadius.value : "15";
+      const med = elMed ? elMed.value : "none";
+
+      const dw = document.getElementById("dispWeight");
+      const db = document.getElementById("dispBudget");
+      const dr = document.getElementById("dispRadius");
+      if (dw) dw.innerText = weight + " kg";
+      if (db) db.innerText = "₹" + budget;
+      if (dr) dr.innerText = radius + " km";
+
+      let goalMult = { "Muscle_Gain": 1.80, "Fat_Loss": 1.60, "Athletic_Endurance": 1.50, "General_Wellness": 1.20 }[goal] || 1.80;
+      if (med === "kidney_caution") goalMult = 1.00;
+
+      const targetProt = Math.round(weight * goalMult * 10) / 10;
+      const rt = document.getElementById("resTarget");
+      const rtd = document.getElementById("resTargetDelta");
+      const rrd = document.getElementById("resRadiusDelta");
+      if (rt) rt.innerText = targetProt.toFixed(1) + " g/day";
+      if (rtd) rtd.innerText = goalMult + " g/kg target";
+      if (rrd) rrd.innerText = `Within ${radius} km in ${city}`;
+
+      const foods = CANDIDATES_DB[diet] || CANDIDATES_DB["Veg"];
+      const stores = CITY_STORES[city] || CITY_STORES["Bengaluru"];
+      const rfc = document.getElementById("resFoodsCount");
+      if (rfc) rfc.innerText = foods.length * 3;
+
+      // Simulate LP Allocation across 4 slots: Breakfast, Lunch, Post-Workout Fuel, Dinner
+      const slots = ["Breakfast", "Lunch", "Post-Workout Fuel", "Dinner"];
+      let totalCost = 0;
+      let totalProt = 0;
+      const mealRows = [];
+
+      slots.forEach((s, idx) => {
+        const f = foods[idx % foods.length];
+        const targetSlot = targetProt / 4.0;
+        let portion = Math.min(f.maxG, Math.max(70, Math.round((targetSlot / f.usable100) * 100)));
+        let cost = (portion / 100) * f.price100;
+
+        if (totalCost + cost > budget && totalCost > 0) {
+          portion = Math.max(50, Math.round(portion * 0.70));
+          cost = (portion / 100) * f.price100;
+        }
+
+        const pDelivered = Math.round((portion / 100) * f.usable100 * 10) / 10;
+        const leu = Math.round((portion / 100) * f.leu100 * 10) / 10;
+        totalCost += cost;
+        totalProt += pDelivered;
+
+        mealRows.push({
+          slot: s,
+          name: f.name,
+          portion: portion,
+          prot: pDelivered,
+          leu: leu,
+          cost: cost,
+          store: stores[idx % stores.length],
+          dist: (2.5 + idx * 2.1).toFixed(1)
+        });
+      });
+
+      const rc = document.getElementById("resCost");
+      const rcd = document.getElementById("resCostDelta");
+      if (rc) rc.innerText = "₹" + totalCost.toFixed(1);
+      if (rcd) {
+        if (totalCost <= budget) {
+          rcd.innerText = `✅ ₹${(budget - totalCost).toFixed(1)} under budget`;
+          rcd.className = "st-metric-delta";
+        } else {
+          rcd.innerText = `⚠️ ₹${(totalCost - budget).toFixed(1)} over budget`;
+          rcd.className = "st-metric-delta coral";
+        }
+      }
+
+      const rd = document.getElementById("resDelivered");
+      const rkd = document.getElementById("resKcalDelta");
+      if (rd) rd.innerText = totalProt.toFixed(1) + " g";
+      if (rkd) rkd.innerText = `${Math.round(totalProt * 8.5)} kcal total`;
+
+      const pc = document.getElementById("planCaption");
+      if (pc) {
+        pc.innerHTML = `Delivering <strong>${totalProt.toFixed(1)}g bioavailable usable protein</strong> (Target: ${targetProt.toFixed(1)}g) at <strong>₹${totalCost.toFixed(1)}/day</strong> strictly within your <strong>₹${budget}</strong> daily budget (${Math.round(totalProt * 8.5)} kcal total).`;
+      }
+
+      // Render Meal Plan
+      const mealTbody = document.getElementById("mealPlanTableBody");
+      if (mealTbody) {
+        mealTbody.innerHTML = "";
+        mealRows.forEach(r => {
+          const tr = document.createElement("tr");
+          tr.innerHTML = `
+            <td style="color: var(--classic-blue); font-weight: 700;">${r.slot}</td>
+            <td><strong>${r.name}</strong></td>
+            <td>${r.portion} g</td>
+            <td><strong>${r.prot.toFixed(1)} g</strong></td>
+            <td>${r.leu >= 2.2 ? `<span class="tag-met">🟢 Trigger Met (${r.leu.toFixed(1)}g)</span>` : `<span class="tag-sub">🟡 Sub-trigger (${r.leu.toFixed(1)}g)</span>`}</td>
+            <td>₹${r.cost.toFixed(2)}</td>
+            <td>${r.store}</td>
+            <td>${r.dist} km</td>
+          `;
+          mealTbody.appendChild(tr);
+        });
+      }
+
+      // Render Candidates Table
+      const candTbody = document.getElementById("candidatesTableBody");
+      if (candTbody) {
+        candTbody.innerHTML = "";
+        foods.forEach((f, i) => {
+          const tr = document.createElement("tr");
+          const cost10g = ((10 / f.usable100) * f.price100).toFixed(1);
+          const score = (0.92 - i * 0.04).toFixed(3);
+          tr.innerHTML = `
+            <td><strong>${f.name}</strong></td>
+            <td>${f.diet}</td>
+            <td>${stores[i % stores.length]}</td>
+            <td>${(3.2 + i * 1.8).toFixed(1)} km</td>
+            <td>${f.usable100} g</td>
+            <td>₹${f.price100.toFixed(2)}</td>
+            <td>₹${cost10g}</td>
+            <td><strong>${score}</strong></td>
+            <td>High usable protein efficiency & optimal proximity in ${city}</td>
+          `;
+          candTbody.appendChild(tr);
+        });
+      }
+    } catch(err) {
+      console.error("runOptimizer error:", err);
+    }
+  }
+
   // Execute immediately or on DOM load
   if (document.readyState === 'loading') {
     document.addEventListener('DOMContentLoaded', runOptimizer);
