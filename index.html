@@ -1,0 +1,547 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>SmartProtein / FitGuard-HDFS | Big Data Quality & Protein Recommender</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=JetBrains+Mono:wght@400;600&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --emerald: #009473;
+      --classic-blue: #0F4C81;
+      --greenery: #88B04B;
+      --living-coral: #FF6F61;
+      --mimosa: #F0C05A;
+      --cloud-dancer: #F8F9FA;
+      --anthracite: #1E232A;
+      --border: #E2E8F0;
+      --card-bg: #FFFFFF;
+      --text-muted: #64748B;
+    }
+
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    body {
+      font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+      background: var(--cloud-dancer);
+      color: var(--anthracite);
+      line-height: 1.6;
+    }
+
+    header {
+      background: linear-gradient(135deg, var(--classic-blue) 0%, #082947 100%);
+      color: white;
+      padding: 3rem 1.5rem 2.5rem;
+      border-bottom: 4px solid var(--emerald);
+    }
+    .header-container {
+      max-width: 1200px;
+      margin: 0 auto;
+    }
+    .badge {
+      display: inline-block;
+      background: rgba(0, 148, 115, 0.25);
+      border: 1px solid var(--emerald);
+      color: #A7F3D0;
+      font-size: 0.8rem;
+      font-weight: 600;
+      padding: 0.25rem 0.75rem;
+      border-radius: 9999px;
+      text-transform: uppercase;
+      letter-spacing: 0.05em;
+      margin-bottom: 0.8rem;
+    }
+    h1 {
+      font-size: 2.4rem;
+      font-weight: 800;
+      line-height: 1.2;
+      margin-bottom: 0.6rem;
+    }
+    p.lead {
+      font-size: 1.15rem;
+      color: #CBD5E1;
+      max-width: 850px;
+      margin-bottom: 1.5rem;
+    }
+    .header-links a {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.5rem;
+      background: var(--emerald);
+      color: white;
+      text-decoration: none;
+      font-weight: 600;
+      padding: 0.65rem 1.25rem;
+      border-radius: 6px;
+      margin-right: 0.75rem;
+      margin-bottom: 0.5rem;
+      transition: background 0.2s;
+    }
+    .header-links a.secondary {
+      background: rgba(255, 255, 255, 0.12);
+      border: 1px solid rgba(255, 255, 255, 0.25);
+    }
+    .header-links a:hover {
+      background: #007A5E;
+    }
+    .header-links a.secondary:hover {
+      background: rgba(255, 255, 255, 0.25);
+    }
+
+    main {
+      max-width: 1200px;
+      margin: 2rem auto;
+      padding: 0 1.5rem;
+    }
+
+    .kpi-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+      gap: 1.25rem;
+      margin-bottom: 2.5rem;
+    }
+    .kpi-card {
+      background: var(--card-bg);
+      border-radius: 10px;
+      padding: 1.25rem 1.5rem;
+      border-left: 5px solid var(--emerald);
+      box-shadow: 0 2px 6px rgba(0,0,0,0.05);
+    }
+    .kpi-title {
+      font-size: 0.85rem;
+      color: var(--text-muted);
+      font-weight: 600;
+      text-transform: uppercase;
+      letter-spacing: 0.04em;
+    }
+    .kpi-value {
+      font-size: 1.85rem;
+      font-weight: 800;
+      color: var(--classic-blue);
+      margin: 0.3rem 0;
+    }
+    .kpi-delta {
+      font-size: 0.85rem;
+      font-weight: 600;
+      color: var(--emerald);
+    }
+
+    .section-card {
+      background: var(--card-bg);
+      border-radius: 12px;
+      padding: 2rem;
+      margin-bottom: 2rem;
+      box-shadow: 0 2px 8px rgba(0,0,0,0.06);
+      border: 1px solid var(--border);
+    }
+    h2 {
+      font-size: 1.6rem;
+      color: var(--classic-blue);
+      margin-bottom: 0.5rem;
+    }
+    .section-desc {
+      color: var(--text-muted);
+      margin-bottom: 1.5rem;
+    }
+
+    /* Calculator Demo Styles */
+    .controls-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+      gap: 1.25rem;
+      background: #F1F5F9;
+      padding: 1.25rem;
+      border-radius: 8px;
+      margin-bottom: 1.5rem;
+    }
+    .control-group label {
+      display: block;
+      font-size: 0.85rem;
+      font-weight: 600;
+      margin-bottom: 0.4rem;
+      color: var(--anthracite);
+    }
+    .control-group select, .control-group input[type="range"] {
+      width: 100%;
+      padding: 0.5rem;
+      border: 1px solid #CBD5E1;
+      border-radius: 6px;
+      font-family: inherit;
+      background: white;
+    }
+    .slider-val {
+      font-weight: 700;
+      color: var(--classic-blue);
+      float: right;
+    }
+
+    .meal-table {
+      width: 100%;
+      border-collapse: collapse;
+      margin-top: 1rem;
+    }
+    .meal-table th, .meal-table td {
+      padding: 0.75rem 1rem;
+      text-align: left;
+      border-bottom: 1px solid var(--border);
+    }
+    .meal-table th {
+      background: #F8FAFC;
+      color: var(--classic-blue);
+      font-size: 0.85rem;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 0.04em;
+    }
+    .meal-table td {
+      font-size: 0.95rem;
+    }
+    .tag-slot {
+      font-weight: 700;
+      color: var(--classic-blue);
+    }
+    .tag-leucine {
+      display: inline-block;
+      font-size: 0.8rem;
+      font-weight: 600;
+      padding: 0.2rem 0.5rem;
+      border-radius: 4px;
+      background: #DEF7EC;
+      color: #03543F;
+    }
+
+    /* Medallion Architecture Steps */
+    .arch-flow {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+      gap: 1.25rem;
+      margin: 1.5rem 0;
+    }
+    .arch-step {
+      background: #F8FAFC;
+      border: 1px solid var(--border);
+      border-radius: 8px;
+      padding: 1.25rem;
+      position: relative;
+    }
+    .arch-step.bronze { border-top: 4px solid #D97706; }
+    .arch-step.silver { border-top: 4px solid #64748B; }
+    .arch-step.quarantine { border-top: 4px solid #DC2626; }
+    .arch-step.gold { border-top: 4px solid #F59E0B; }
+    .arch-title {
+      font-size: 1.1rem;
+      font-weight: 700;
+      margin-bottom: 0.5rem;
+      color: var(--anthracite);
+    }
+    .arch-desc {
+      font-size: 0.85rem;
+      color: var(--text-muted);
+    }
+
+    code {
+      font-family: 'JetBrains Mono', monospace;
+      background: #E2E8F0;
+      padding: 0.15rem 0.35rem;
+      border-radius: 4px;
+      font-size: 0.88em;
+    }
+
+    footer {
+      text-align: center;
+      padding: 2.5rem 1rem;
+      color: var(--text-muted);
+      font-size: 0.9rem;
+      border-top: 1px solid var(--border);
+      background: white;
+    }
+  </style>
+</head>
+<body>
+
+<header>
+  <div class="header-container">
+    <span class="badge">Apache Hadoop • Spark • Hive • Streamlit</span>
+    <h1>SmartProtein / FitGuard-HDFS</h1>
+    <p class="lead">
+      A 4-Zone Big Data Lakehouse & Automated Data Quality Pipeline with Stigler Linear Programming for Accurate, Bioavailable, and Hyperlocal Protein Optimization.
+    </p>
+    <div class="header-links">
+      <a href="https://github.com/amitmohite078-bot/bdt-v1" target="_blank">
+        <svg height="20" width="20" viewBox="0 0 16 16" fill="currentColor"><path d="M8 0C3.58 0 0 3.58 0 8c0 3.54 2.29 6.53 5.47 7.59.4.07.55-.17.55-.38 0-.19-.01-.82-.01-1.49-2.01.37-2.53-.49-2.69-.94-.09-.23-.48-.94-.82-1.13-.28-.15-.68-.52-.01-.53.63-.01 1.08.58 1.23.82.72 1.21 1.87.87 2.33.66.07-.52.28-.87.51-1.07-1.78-.2-3.64-.89-3.64-3.95 0-.87.31-1.59.82-2.15-.08-.2-.36-1.02.08-2.12 0 0 .67-.21 2.2.82.64-.18 1.32-.27 2-.27.68 0 1.36.09 2 .27 1.53-1.04 2.2-.82 2.2-.82.44 1.1.16 1.92.08 2.12.51.56.82 1.27.82 2.15 0 3.07-1.87 3.75-3.65 3.95.29.25.54.73.54 1.48 0 1.07-.01 1.93-.01 2.2 0 .21.15.46.55.38A8.013 8.013 0 0016 8c0-4.42-3.58-8-8-8z"></path></svg>
+        GitHub Repository
+      </a>
+      <a href="#demo" class="secondary">⚡ Live Plan Generator Demo</a>
+      <a href="#architecture" class="secondary">🏛️ Medallion Architecture</a>
+    </div>
+  </div>
+</header>
+
+<main>
+  <!-- KPI Metrics -->
+  <div class="kpi-grid">
+    <div class="kpi-card">
+      <div class="kpi-title">Data Ingestion Volume</div>
+      <div class="kpi-value">59,621</div>
+      <div class="kpi-delta">IoT JSONL & Multi-modal Catalogs</div>
+    </div>
+    <div class="kpi-card">
+      <div class="kpi-title">Quarantined Anomalies</div>
+      <div class="kpi-value">6,894</div>
+      <div class="kpi-delta">Dead-Letter Lineage (DQ-001..DQ-010)</div>
+    </div>
+    <div class="kpi-card">
+      <div class="kpi-title">Atwater DQ Accuracy</div>
+      <div class="kpi-value">99.8%</div>
+      <div class="kpi-delta">4P + 4C + 9F = Kcal ± 15%</div>
+    </div>
+    <div class="kpi-card">
+      <div class="kpi-title">Daily Plan Cost Adherence</div>
+      <div class="kpi-value">100%</div>
+      <div class="kpi-delta">Strict Cost &le; User Daily Budget</div>
+    </div>
+  </div>
+
+  <!-- Interactive Live Protein Plan Demo -->
+  <section id="demo" class="section-card">
+    <h2>🍱 Live Interactive Protein Plan Generator</h2>
+    <p class="section-desc">
+      Powered by the Stigler Linear Programming optimization formulation. Select your dietary preference, daily budget, and fitness goal to calculate your personalized 4-slot daily menu instantly in your browser.
+    </p>
+
+    <div class="controls-grid">
+      <div class="control-group">
+        <label for="selDiet">Dietary Choice</label>
+        <select id="selDiet" onchange="recalculatePlan()">
+          <option value="Non-Veg">Non-Veg (Chicken, Fish, Eggs, Dairy)</option>
+          <option value="Veg" selected>Vegetarian (Dairy, Pulses, Soy, Nuts)</option>
+          <option value="Vegan">Vegan (Plant-Based Only)</option>
+          <option value="Eggetarian">Eggetarian (Eggs + Veg)</option>
+        </select>
+      </div>
+      <div class="control-group">
+        <label for="selGoal">Fitness Goal</label>
+        <select id="selGoal" onchange="recalculatePlan()">
+          <option value="Muscle_Gain" selected>Muscle Gain (1.8g / kg)</option>
+          <option value="Fat_Loss">Fat Loss (1.6g / kg)</option>
+          <option value="Athletic_Endurance">Athletic Endurance (1.5g / kg)</option>
+          <option value="General_Wellness">General Wellness (1.2g / kg)</option>
+        </select>
+      </div>
+      <div class="control-group">
+        <label for="rngWeight">Body Weight (kg): <span class="slider-val" id="valWeight">70 kg</span></label>
+        <input type="range" id="rngWeight" min="45" max="110" value="70" step="1" oninput="updateSliders(); recalculatePlan();">
+      </div>
+      <div class="control-group">
+        <label for="rngBudget">Daily Budget (₹): <span class="slider-val" id="valBudget">₹160</span></label>
+        <input type="range" id="rngBudget" min="60" max="400" value="160" step="10" oninput="updateSliders(); recalculatePlan();">
+      </div>
+    </div>
+
+    <div style="display: flex; gap: 1rem; margin-bottom: 1rem; flex-wrap: wrap;">
+      <div style="background: #ECFDF5; border-left: 4px solid var(--emerald); padding: 0.6rem 1rem; border-radius: 6px; font-size: 0.9rem;">
+        <strong>Protein Target:</strong> <span id="summaryTarget">126.0 g</span>/day
+      </div>
+      <div style="background: #EFF6FF; border-left: 4px solid var(--classic-blue); padding: 0.6rem 1rem; border-radius: 6px; font-size: 0.9rem;">
+        <strong>Total Delivered:</strong> <span id="summaryDelivered">125.4 g</span> bioavailable usable protein
+      </div>
+      <div style="background: #FEF3C7; border-left: 4px solid var(--mimosa); padding: 0.6rem 1rem; border-radius: 6px; font-size: 0.9rem;">
+        <strong>Daily Cost:</strong> <span id="summaryCost">₹134.50</span> / ₹<span id="summaryBudget">160</span>
+      </div>
+    </div>
+
+    <table class="meal-table">
+      <thead>
+        <tr>
+          <th>Meal Slot</th>
+          <th>Food Item</th>
+          <th>Portion</th>
+          <th>Usable Protein</th>
+          <th>Leucine (MPS Trigger)</th>
+          <th>Cost (₹)</th>
+        </tr>
+      </thead>
+      <tbody id="mealTableBody">
+        <!-- Rendered by JS -->
+      </tbody>
+    </table>
+  </section>
+
+  <!-- Architecture Section -->
+  <section id="architecture" class="section-card">
+    <h2>🏛️ 4-Zone Medallion Lakehouse Architecture on HDFS</h2>
+    <p class="section-desc">
+      Built following modern data engineering principles on Hadoop Distributed File System (HDFS) and Apache Spark.
+    </p>
+
+    <div class="arch-flow">
+      <div class="arch-step bronze">
+        <div class="arch-title">1. Bronze Zone</div>
+        <div class="arch-desc">
+          Raw, immutable landing for high-velocity wearable telemetry (<code>.jsonl</code>), multi-city food catalogs, and user fitness surveys.
+        </div>
+      </div>
+      <div class="arch-step silver">
+        <div class="arch-title">2. Silver Zone</div>
+        <div class="arch-desc">
+          Cleaned, deduplicated, and unit-normalized Snappy Parquet tables. Mislabeled foods corrected; telemetry dropouts imputed.
+        </div>
+      </div>
+      <div class="arch-step quarantine">
+        <div class="arch-title">3. Quarantine Zone</div>
+        <div class="arch-desc">
+          Dead-letter storage preserving rejected anomalies with explicit violation codes (<code>DQ-SEM-001</code>, <code>DQ-PHY-002</code>, <code>DQ-TIM-001</code>).
+        </div>
+      </div>
+      <div class="arch-step gold">
+        <div class="arch-title">4. Gold Zone</div>
+        <div class="arch-desc">
+          Aggregated analytics, Atwater-verified macronutrient profiles, and Linear Programming meal allocation tables exposed to Apache Hive.
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Biochemical Informatics -->
+  <section class="section-card">
+    <h2>🧬 Biochemical Informatics & Atwater Verification</h2>
+    <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 1.5rem; margin-top: 1rem;">
+      <div style="background: #F8FAFC; border: 1px solid var(--border); padding: 1.25rem; border-radius: 8px;">
+        <h3 style="color: var(--classic-blue); margin-bottom: 0.5rem; font-size: 1.1rem;">Atwater Energy Conservation</h3>
+        <p style="font-size: 0.9rem; color: #475569; margin-bottom: 0.75rem;">
+          Nutritional thermodynamic check validating stated calories against macronutrients:
+        </p>
+        <code>Calories = (P × 4) + (C × 4) + (F × 9) ± 15%</code>
+      </div>
+      <div style="background: #F8FAFC; border: 1px solid var(--border); padding: 1.25rem; border-radius: 8px;">
+        <h3 style="color: var(--classic-blue); margin-bottom: 0.5rem; font-size: 1.1rem;">DIAAS Usable Protein</h3>
+        <p style="font-size: 0.9rem; color: #475569; margin-bottom: 0.75rem;">
+          Ileal amino acid digestibility discounting ensures real protein bioavailability:
+        </p>
+        <code>Usable Protein = Crude Protein × DIAAS Score</code>
+      </div>
+      <div style="background: #F8FAFC; border: 1px solid var(--border); padding: 1.25rem; border-radius: 8px;">
+        <h3 style="color: var(--classic-blue); margin-bottom: 0.5rem; font-size: 1.1rem;">Leucine MPS Threshold</h3>
+        <p style="font-size: 0.9rem; color: #475569; margin-bottom: 0.75rem;">
+          Ensures each meal slot triggers muscle protein synthesis (MPS) via the leucine trigger:
+        </p>
+        <code>Leucine Per Meal &ge; 2.2g (Trigger Met)</code>
+      </div>
+    </div>
+  </section>
+</main>
+
+<footer>
+  <p><strong>SmartProtein / FitGuard-HDFS</strong> — Apache Hadoop, PySpark, Hive, and Streamlit Big Data Technologies Project.</p>
+  <p style="margin-top: 0.4rem;">Pushed and maintained on GitHub: <a href="https://github.com/amitmohite078-bot/bdt-v1" style="color: var(--emerald); text-decoration: none; font-weight: 600;">amitmohite078-bot/bdt-v1</a></p>
+</footer>
+
+<script>
+  const FOOD_DATABASE = {
+    "Veg": [
+      { name: "Roasted Chana (Bengal Gram)", prot100: 17.5, cost100: 14.5, leu100: 1.58, maxG: 200, pref: "Breakfast" },
+      { name: "Moong Dal Split", prot100: 19.2, cost100: 18.0, leu100: 1.62, maxG: 200, pref: "Lunch" },
+      { name: "Low-Fat Paneer", prot100: 22.0, cost100: 38.0, leu100: 2.15, maxG: 180, pref: "Dinner" },
+      { name: "Soya Chunks (Nutrela)", prot100: 46.5, cost100: 16.5, leu100: 3.52, maxG: 100, pref: "Post-Workout Fuel" },
+      { name: "Curd / Dahi (Greek Style)", prot100: 9.0, cost100: 15.0, leu100: 0.92, maxG: 250, pref: "Breakfast" }
+    ],
+    "Vegan": [
+      { name: "Roasted Chana (Bengal Gram)", prot100: 17.5, cost100: 14.5, leu100: 1.58, maxG: 200, pref: "Breakfast" },
+      { name: "Moong Dal Split", prot100: 19.2, cost100: 18.0, leu100: 1.62, maxG: 200, pref: "Lunch" },
+      { name: "Tofu (Firm Organic)", prot100: 15.5, cost100: 32.0, leu100: 1.48, maxG: 200, pref: "Dinner" },
+      { name: "Soya Chunks (Nutrela)", prot100: 46.5, cost100: 16.5, leu100: 3.52, maxG: 120, pref: "Post-Workout Fuel" },
+      { name: "Peanut Butter (Natural)", prot100: 22.0, cost100: 30.0, leu100: 1.65, maxG: 60, pref: "Breakfast" }
+    ],
+    "Eggetarian": [
+      { name: "Boiled Eggs (Whole)", prot100: 13.0, cost100: 22.0, leu100: 1.25, maxG: 200, pref: "Breakfast" },
+      { name: "Egg Whites", prot100: 11.0, cost100: 24.0, leu100: 1.10, maxG: 250, pref: "Post-Workout Fuel" },
+      { name: "Moong Dal Split", prot100: 19.2, cost100: 18.0, leu100: 1.62, maxG: 200, pref: "Lunch" },
+      { name: "Low-Fat Paneer", prot100: 22.0, cost100: 38.0, leu100: 2.15, maxG: 180, pref: "Dinner" },
+      { name: "Roasted Chana", prot100: 17.5, cost100: 14.5, leu100: 1.58, maxG: 150, pref: "Breakfast" }
+    ],
+    "Non-Veg": [
+      { name: "Boiled Eggs (Whole)", prot100: 13.0, cost100: 22.0, leu100: 1.25, maxG: 180, pref: "Breakfast" },
+      { name: "Chicken Breast (Boneless)", prot100: 31.0, cost100: 42.0, leu100: 2.65, maxG: 250, pref: "Dinner" },
+      { name: "Moong Dal Split", prot100: 19.2, cost100: 18.0, leu100: 1.62, maxG: 200, pref: "Lunch" },
+      { name: "Soya Chunks (Nutrela)", prot100: 46.5, cost100: 16.5, leu100: 3.52, maxG: 80, pref: "Post-Workout Fuel" },
+      { name: "Rohu / Katla Fish", prot100: 20.0, cost100: 36.0, leu100: 1.75, maxG: 200, pref: "Lunch" }
+    ]
+  };
+
+  function updateSliders() {
+    document.getElementById("valWeight").innerText = document.getElementById("rngWeight").value + " kg";
+    document.getElementById("valBudget").innerText = "₹" + document.getElementById("rngBudget").value;
+  }
+
+  function recalculatePlan() {
+    const diet = document.getElementById("selDiet").value;
+    const goal = document.getElementById("selGoal").value;
+    const weight = parseFloat(document.getElementById("rngWeight").value);
+    const budget = parseFloat(document.getElementById("rngBudget").value);
+
+    const goalMult = { "Muscle_Gain": 1.8, "Fat_Loss": 1.6, "Athletic_Endurance": 1.5, "General_Wellness": 1.2 }[goal] || 1.8;
+    const targetProt = Math.round(weight * goalMult * 10) / 10;
+
+    const foods = FOOD_DATABASE[diet] || FOOD_DATABASE["Veg"];
+    const slots = ["Breakfast", "Lunch", "Post-Workout Fuel", "Dinner"];
+
+    let totalProt = 0;
+    let totalCost = 0;
+    const planRows = [];
+
+    slots.forEach((slot, idx) => {
+      const food = foods[idx % foods.length];
+      const targetSlotProt = targetProt / slots.length;
+      let portion = Math.min(food.maxG, Math.max(60, Math.round((targetSlotProt / food.prot100) * 100)));
+      
+      let cost = (portion / 100) * food.cost100;
+      // Budget check scaling
+      if (totalCost + cost > budget && totalCost > 0) {
+        portion = Math.max(50, Math.round(portion * 0.75));
+        cost = (portion / 100) * food.cost100;
+      }
+
+      const pDelivered = Math.round((portion / 100) * food.prot100 * 10) / 10;
+      const leu = Math.round((portion / 100) * food.leu100 * 10) / 10;
+      totalProt += pDelivered;
+      totalCost += cost;
+
+      planRows.push({
+        slot: slot,
+        foodName: food.name,
+        portion: portion + " g",
+        protein: pDelivered.toFixed(1) + " g",
+        leucine: leu >= 2.2 ? `🟢 ${leu.toFixed(1)}g (Met)` : `🟡 ${leu.toFixed(1)}g`,
+        cost: "₹" + cost.toFixed(1)
+      });
+    });
+
+    document.getElementById("summaryTarget").innerText = targetProt.toFixed(1) + " g";
+    document.getElementById("summaryDelivered").innerText = totalProt.toFixed(1) + " g";
+    document.getElementById("summaryCost").innerText = "₹" + totalCost.toFixed(1);
+    document.getElementById("summaryBudget").innerText = budget.toFixed(0);
+
+    const tbody = document.getElementById("mealTableBody");
+    tbody.innerHTML = "";
+    planRows.forEach(r => {
+      const tr = document.createElement("tr");
+      tr.innerHTML = `
+        <td class="tag-slot">${r.slot}</td>
+        <td><strong>${r.foodName}</strong></td>
+        <td>${r.portion}</td>
+        <td>${r.protein}</td>
+        <td>${r.leucine}</td>
+        <td>${r.cost}</td>
+      `;
+      tbody.appendChild(tr);
+    });
+  }
+
+  // Initial load
+  updateSliders();
+  recalculatePlan();
+</script>
+
+</body>
+</html>
