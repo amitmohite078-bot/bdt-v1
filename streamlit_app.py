@@ -1,7 +1,14 @@
 """Streamlit App Entrypoint for SmartProtein | Hadoop HDFS DQ & Accurate Protein Recommender."""
 
+import asyncio
 import sys
 from pathlib import Path
+
+if sys.platform == "win32":
+    try:
+        asyncio.set_event_loop_policy(asyncio.WindowsSelectorEventLoopPolicy())
+    except Exception:
+        pass
 
 # Add project root and smartprotein to sys.path
 PROJECT_ROOT = Path(__file__).resolve().parent
