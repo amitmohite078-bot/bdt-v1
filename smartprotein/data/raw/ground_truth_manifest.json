@@ -1,0 +1,26 @@
+{
+  "scale": "dev",
+  "error_rate": 0.18,
+  "ingestion_date": "2026-11-22",
+  "total_records_all_tables": 101900,
+  "food_composition": {
+    "total_rows": 15000,
+    "injected_nulls": 393,
+    "injected_impossible_macros": 776,
+    "injected_atwater_mismatch": 367,
+    "injected_unit_errors": 385,
+    "injected_diet_tag_lies": 171,
+    "injected_fuzzy_duplicates": 382
+  },
+  "store_locations": 400,
+  "store_prices": {
+    "total_rows": 35000,
+    "bad_prices": 3166,
+    "usd_currency": 1621
+  },
+  "user_wearables": {
+    "total_rows": 50000,
+    "bad_wearables": 4540
+  },
+  "crowd_flags": 1500
+}

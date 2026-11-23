@@ -1,0 +1,38 @@
+{
+  "scoring_weights": {
+    "w1_adjusted_protein": 0.35,
+    "w2_protein_per_cost": 0.30,
+    "w3_proximity": 0.15,
+    "w4_preference_match": 0.20,
+    "w5_calorie_penalty": 0.10
+  },
+  "max_distance_km": 15.0,
+  "diet_hierarchy": {
+    "Vegan": ["Vegan"],
+    "Veg": ["Vegan", "Veg"],
+    "Eggetarian": ["Vegan", "Veg", "Eggetarian"],
+    "Non-Veg": ["Vegan", "Veg", "Eggetarian", "Non-Veg"]
+  },
+  "allergy_aliases": {
+    "lactose": ["lactose", "dairy"],
+    "dairy": ["dairy", "lactose"],
+    "nuts": ["nuts", "peanuts"],
+    "peanuts": ["peanuts", "nuts"],
+    "soy": ["soy"],
+    "egg": ["egg"],
+    "fish": ["fish"],
+    "gluten": ["gluten"]
+  },
+  "micronutrient_rda": {
+    "iron_mg": 14.0,
+    "calcium_mg": 1000.0,
+    "b12_mcg": 2.4
+  },
+  "lp_defaults": {
+    "max_single_food_grams_per_day": 250.0,
+    "min_food_variety_count": 3,
+    "daily_kcal_min": 1400.0,
+    "daily_kcal_max": 2700.0
+  }
+}
+

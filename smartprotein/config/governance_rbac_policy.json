@@ -1,0 +1,38 @@
+{
+  "governance_framework": "Apache Ranger RBAC + HDFS Encryption + Salted SHA-256 PII Anonymization",
+  "pii_protection": {
+    "hashed_fields": ["user_id -> user_hash_id (SHA-256 + salt)"],
+    "generalized_fields": ["latitude, longitude -> 2-decimal ~1 km grid (lat_grid, lon_grid)"],
+    "encrypted_zones_hdfs": [
+      "/smartprotein/raw/user_wearables (HDFS KMS AES-256-CTR zone in prod)"
+    ]
+  },
+  "ranger_rbac_policies": [
+    {
+      "role": "data_engineer_etl",
+      "hdfs_paths": ["/smartprotein/*"],
+      "permissions": ["READ", "WRITE", "EXECUTE"],
+      "hive_databases": ["smartprotein_raw", "smartprotein_staging", "smartprotein_curated", "smartprotein_rejected", "smartprotein_analytics"]
+    },
+    {
+      "role": "data_steward_dq",
+      "hdfs_paths": ["/smartprotein/rejected/*", "/smartprotein/analytics/dq_*"],
+      "permissions": ["READ", "WRITE"],
+      "hive_databases": ["smartprotein_rejected", "smartprotein_analytics"]
+    },
+    {
+      "role": "nutrition_analyst",
+      "hdfs_paths": ["/smartprotein/curated/*", "/smartprotein/analytics/*"],
+      "permissions": ["READ"],
+      "hive_databases": ["smartprotein_curated", "smartprotein_analytics"],
+      "denied_columns": ["raw_user_wearables.user_id", "raw_user_wearables.latitude", "raw_user_wearables.longitude"]
+    },
+    {
+      "role": "dashboard_app_service",
+      "hdfs_paths": ["/smartprotein/analytics/*", "/smartprotein/curated/protein_quality_enriched", "/smartprotein/curated/local_store_inventory"],
+      "permissions": ["READ"],
+      "hive_databases": ["smartprotein_analytics", "smartprotein_curated"]
+    }
+  ]
+}
+

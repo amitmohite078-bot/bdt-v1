@@ -1,0 +1,501 @@
+[
+  {
+    "dataset": "food_composition",
+    "total_rows": 60008,
+    "duplicate_rows_on_key": 59100,
+    "duplicate_pct": 98.49,
+    "columns": [
+      {
+        "column": "record_id",
+        "dtype": "str",
+        "null_count": 0,
+        "null_pct": 0.0,
+        "distinct_count": 15002
+      },
+      {
+        "column": "source_db",
+        "dtype": "str",
+        "null_count": 0,
+        "null_pct": 0.0,
+        "distinct_count": 4
+      },
+      {
+        "column": "food_name",
+        "dtype": "str",
+        "null_count": 828,
+        "null_pct": 1.38,
+        "distinct_count": 199
+      },
+      {
+        "column": "category",
+        "dtype": "str",
+        "null_count": 0,
+        "null_pct": 0.0,
+        "distinct_count": 8
+      },
+      {
+        "column": "diet_type",
+        "dtype": "str",
+        "null_count": 0,
+        "null_pct": 0.0,
+        "distinct_count": 4
+      },
+      {
+        "column": "state_raw_cooked",
+        "dtype": "str",
+        "null_count": 0,
+        "null_pct": 0.0,
+        "distinct_count": 6
+      },
+      {
+        "column": "serving_unit",
+        "dtype": "str",
+        "null_count": 0,
+        "null_pct": 0.0,
+        "distinct_count": 2
+      },
+      {
+        "column": "protein_g",
+        "dtype": "float64",
+        "null_count": 744,
+        "null_pct": 1.24,
+        "distinct_count": 4670,
+        "min": -15.0,
+        "p25": 11.197,
+        "median": 20.84,
+        "p75": 27.273,
+        "max": 164.9,
+        "mean": 28.005
+      },
+      {
+        "column": "carbs_g",
+        "dtype": "float64",
+        "null_count": 0,
+        "null_pct": 0.0,
+        "distinct_count": 3858,
+        "min": 0.0,
+        "p25": 1.33,
+        "median": 5.22,
+        "p75": 35.68,
+        "max": 89.72,
+        "mean": 20.438
+      },
+      {
+        "column": "fat_g",
+        "dtype": "float64",
+        "null_count": 0,
+        "null_pct": 0.0,
+        "distinct_count": 2196,
+        "min": 0.1,
+        "p25": 1.14,
+        "median": 2.95,
+        "p75": 6.32,
+        "max": 64.1,
+        "mean": 8.187
+      },
+      {
+        "column": "fiber_g",
+        "dtype": "float64",
+        "null_count": 0,
+        "null_pct": 0.0,
+        "distinct_count": 1358,
+        "min": 0.0,
+        "p25": 0.0,
+        "median": 1.415,
+        "p75": 8.82,
+        "max": 18.86,
+        "mean": 4.528
+      },
+      {
+        "column": "moisture_g",
+        "dtype": "float64",
+        "null_count": 0,
+        "null_pct": 0.0,
+        "distinct_count": 19,
+        "min": 1.8,
+        "p25": 8.0,
+        "median": 59.0,
+        "p75": 74.5,
+        "max": 87.5,
+        "mean": 41.593
+      },
+      {
+        "column": "reported_kcal",
+        "dtype": "float64",
+        "null_count": 0,
+        "null_pct": 0.0,
+        "distinct_count": 4175,
+        "min": 11.3,
+        "p25": 105.7,
+        "median": 247.45,
+        "p75": 364.2,
+        "max": 2842.2,
+        "mean": 274.637
+      },
+      {
+        "column": "energy_unit",
+        "dtype": "str",
+        "null_count": 0,
+        "null_pct": 0.0,
+        "distinct_count": 2
+      },
+      {
+        "column": "iron_mg",
+        "dtype": "float64",
+        "null_count": 0,
+        "null_pct": 0.0,
+        "distinct_count": 18,
+        "min": 0.1,
+        "p25": 0.7,
+        "median": 1.9,
+        "p75": 4.8,
+        "max": 18.0,
+        "mean": 4.0
+      },
+      {
+        "column": "calcium_mg",
+        "dtype": "float64",
+        "null_count": 0,
+        "null_pct": 0.0,
+        "distinct_count": 18,
+        "min": 7.0,
+        "p25": 45.0,
+        "median": 95.0,
+        "p75": 130.0,
+        "max": 470.0,
+        "mean": 144.987
+      },
+      {
+        "column": "vitamin_b12_mcg",
+        "dtype": "float64",
+        "null_count": 0,
+        "null_pct": 0.0,
+        "distinct_count": 11,
+        "min": 0.0,
+        "p25": 0.0,
+        "median": 0.0,
+        "p75": 0.7,
+        "max": 2.9,
+        "mean": 0.518
+      },
+      {
+        "column": "leucine_g_per_100g_protein",
+        "dtype": "float64",
+        "null_count": 0,
+        "null_pct": 0.0,
+        "distinct_count": 20,
+        "min": 6.6,
+        "p25": 7.6,
+        "median": 8.2,
+        "p75": 8.8,
+        "max": 11.2,
+        "mean": 8.359
+      },
+      {
+        "column": "phytate_mg",
+        "dtype": "float64",
+        "null_count": 0,
+        "null_pct": 0.0,
+        "distinct_count": 12,
+        "min": 0.0,
+        "p25": 0.0,
+        "median": 180.0,
+        "p75": 680.0,
+        "max": 980.0,
+        "mean": 340.828
+      },
+      {
+        "column": "allergens",
+        "dtype": "str",
+        "null_count": 0,
+        "null_pct": 0.0,
+        "distinct_count": 8
+      },
+      {
+        "column": "last_updated",
+        "dtype": "str",
+        "null_count": 0,
+        "null_pct": 0.0,
+        "distinct_count": 4
+      }
+    ]
+  },
+  {
+    "dataset": "store_prices",
+    "total_rows": 140000,
+    "duplicate_rows_on_key": 118756,
+    "duplicate_pct": 84.83,
+    "columns": [
+      {
+        "column": "offer_id",
+        "dtype": "str",
+        "null_count": 0,
+        "null_pct": 0.0,
+        "distinct_count": 35000
+      },
+      {
+        "column": "store_id",
+        "dtype": "str",
+        "null_count": 0,
+        "null_pct": 0.0,
+        "distinct_count": 400
+      },
+      {
+        "column": "food_name_raw",
+        "dtype": "str",
+        "null_count": 0,
+        "null_pct": 0.0,
+        "distinct_count": 277
+      },
+      {
+        "column": "canonical_food_hint",
+        "dtype": "str",
+        "null_count": 0,
+        "null_pct": 0.0,
+        "distinct_count": 20
+      },
+      {
+        "column": "pack_weight_g",
+        "dtype": "float64",
+        "null_count": 0,
+        "null_pct": 0.0,
+        "distinct_count": 4,
+        "min": 100.0,
+        "p25": 100.0,
+        "median": 250.0,
+        "p75": 1000.0,
+        "max": 1000.0,
+        "mean": 463.747
+      },
+      {
+        "column": "price_value",
+        "dtype": "float64",
+        "null_count": 0,
+        "null_pct": 0.0,
+        "distinct_count": 21208,
+        "min": -199.65,
+        "p25": 30.497,
+        "median": 82.91,
+        "p75": 229.142,
+        "max": 99999.0,
+        "mean": 4746.016
+      },
+      {
+        "column": "currency",
+        "dtype": "str",
+        "null_count": 0,
+        "null_pct": 0.0,
+        "distinct_count": 2
+      },
+      {
+        "column": "in_stock",
+        "dtype": "bool",
+        "null_count": 0,
+        "null_pct": 0.0,
+        "distinct_count": 2
+      },
+      {
+        "column": "stock_qty",
+        "dtype": "int64",
+        "null_count": 0,
+        "null_pct": 0.0,
+        "distinct_count": 80,
+        "min": 0.0,
+        "p25": 15.0,
+        "median": 37.0,
+        "p75": 58.0,
+        "max": 79.0,
+        "mean": 36.852
+      },
+      {
+        "column": "updated_at",
+        "dtype": "str",
+        "null_count": 0,
+        "null_pct": 0.0,
+        "distinct_count": 4
+      }
+    ]
+  },
+  {
+    "dataset": "user_wearables",
+    "total_rows": 200000,
+    "duplicate_rows_on_key": 73476,
+    "duplicate_pct": 36.74,
+    "columns": [
+      {
+        "column": "event_id",
+        "dtype": "str",
+        "null_count": 0,
+        "null_pct": 0.0,
+        "distinct_count": 50000
+      },
+      {
+        "column": "user_id",
+        "dtype": "str",
+        "null_count": 0,
+        "null_pct": 0.0,
+        "distinct_count": 3571
+      },
+      {
+        "column": "region",
+        "dtype": "str",
+        "null_count": 0,
+        "null_pct": 0.0,
+        "distinct_count": 4
+      },
+      {
+        "column": "city",
+        "dtype": "str",
+        "null_count": 0,
+        "null_pct": 0.0,
+        "distinct_count": 10
+      },
+      {
+        "column": "latitude",
+        "dtype": "float64",
+        "null_count": 0,
+        "null_pct": 0.0,
+        "distinct_count": 170,
+        "min": 12.264,
+        "p25": 13.083,
+        "median": 19.044,
+        "p75": 26.916,
+        "max": 30.765,
+        "mean": 20.251
+      },
+      {
+        "column": "longitude",
+        "dtype": "float64",
+        "null_count": 0,
+        "null_pct": 0.0,
+        "distinct_count": 130,
+        "min": 72.854,
+        "p25": 75.787,
+        "median": 77.185,
+        "p75": 78.491,
+        "max": 88.388,
+        "mean": 77.809
+      },
+      {
+        "column": "age",
+        "dtype": "int64",
+        "null_count": 0,
+        "null_pct": 0.0,
+        "distinct_count": 38,
+        "min": 19.0,
+        "p25": 28.0,
+        "median": 37.0,
+        "p75": 47.0,
+        "max": 56.0,
+        "mean": 37.46
+      },
+      {
+        "column": "weight_kg",
+        "dtype": "float64",
+        "null_count": 0,
+        "null_pct": 0.0,
+        "distinct_count": 49,
+        "min": 4.0,
+        "p25": 60.0,
+        "median": 73.0,
+        "p75": 85.0,
+        "max": 97.0,
+        "mean": 71.818
+      },
+      {
+        "column": "goal",
+        "dtype": "str",
+        "null_count": 0,
+        "null_pct": 0.0,
+        "distinct_count": 4
+      },
+      {
+        "column": "diet_type",
+        "dtype": "str",
+        "null_count": 0,
+        "null_pct": 0.0,
+        "distinct_count": 4
+      },
+      {
+        "column": "daily_budget_inr",
+        "dtype": "float64",
+        "null_count": 0,
+        "null_pct": 0.0,
+        "distinct_count": 9,
+        "min": -100.0,
+        "p25": 150.0,
+        "median": 250.0,
+        "p75": 350.0,
+        "max": 450.0,
+        "mean": 266.963
+      },
+      {
+        "column": "allergies",
+        "dtype": "str",
+        "null_count": 0,
+        "null_pct": 0.0,
+        "distinct_count": 6
+      },
+      {
+        "column": "medical_conditions",
+        "dtype": "str",
+        "null_count": 0,
+        "null_pct": 0.0,
+        "distinct_count": 3
+      },
+      {
+        "column": "workout_time",
+        "dtype": "str",
+        "null_count": 0,
+        "null_pct": 0.0,
+        "distinct_count": 3
+      },
+      {
+        "column": "steps_daily",
+        "dtype": "int64",
+        "null_count": 0,
+        "null_pct": 0.0,
+        "distinct_count": 13551,
+        "min": -500.0,
+        "p25": 5728.0,
+        "median": 9345.0,
+        "p75": 12923.0,
+        "max": 16499.0,
+        "mean": 9273.084
+      },
+      {
+        "column": "workout_minutes",
+        "dtype": "int64",
+        "null_count": 0,
+        "null_pct": 0.0,
+        "distinct_count": 95,
+        "min": 0.0,
+        "p25": 23.0,
+        "median": 47.0,
+        "p75": 71.0,
+        "max": 94.0,
+        "mean": 47.078
+      },
+      {
+        "column": "sleep_hours",
+        "dtype": "float64",
+        "null_count": 0,
+        "null_pct": 0.0,
+        "distinct_count": 44,
+        "min": 5.0,
+        "p25": 6.1,
+        "median": 7.1,
+        "p75": 8.2,
+        "max": 29.5,
+        "mean": 7.63
+      },
+      {
+        "column": "event_ts",
+        "dtype": "str",
+        "null_count": 0,
+        "null_pct": 0.0,
+        "distinct_count": 56
+      }
+    ]
+  }
+]

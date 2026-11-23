@@ -1,0 +1,58 @@
+{
+  "_mentor_note": "Baseline reference values inspired by USDA FDC & IFCT 2017 for testing & synthetic error-injection. Replace/verify exact micronutrient or DIAAS values against official IFCT 2017 / FAO Paper No. 92 tables before clinical/academic publication.",
+  "regions": {
+    "Karnataka": {
+      "cities": [
+        {"name": "Bengaluru", "lat": 12.9716, "lon": 77.5946, "cost_index": 1.12},
+        {"name": "Mysuru", "lat": 12.2958, "lon": 76.6394, "cost_index": 0.94}
+      ],
+      "regional_staples": ["Ragi Malt / Finger Millet", "Whole Boiled Eggs", "Moong Sprouts", "Soya Chunks"]
+    },
+    "North_India": {
+      "cities": [
+        {"name": "Delhi", "lat": 28.6139, "lon": 77.2090, "cost_index": 1.08},
+        {"name": "Jaipur", "lat": 26.9124, "lon": 75.7873, "cost_index": 0.88},
+        {"name": "Chandigarh", "lat": 30.7333, "lon": 76.7794, "cost_index": 1.00}
+      ],
+      "regional_staples": ["Low-Fat Paneer", "Rajma (Kidney Beans)", "Roasted Chana", "Dahi (Curd)"]
+    },
+    "Maharashtra": {
+      "cities": [
+        {"name": "Mumbai", "lat": 19.0760, "lon": 72.8777, "cost_index": 1.16},
+        {"name": "Pune", "lat": 18.5204, "lon": 73.8567, "cost_index": 1.02}
+      ],
+      "regional_staples": ["Peanut Butter (Unsweetened)", "Moong Dal Split", "Chicken Breast", "Whey Protein Isolate"]
+    },
+    "South_East": {
+      "cities": [
+        {"name": "Hyderabad", "lat": 17.3850, "lon": 78.4867, "cost_index": 0.96},
+        {"name": "Chennai", "lat": 13.0827, "lon": 80.2707, "cost_index": 1.00},
+        {"name": "Kolkata", "lat": 22.5726, "lon": 88.3639, "cost_index": 0.90}
+      ],
+      "regional_staples": ["Rohu Fish Fillet", "Whole Boiled Eggs", "Kabuli Chana", "Tofu (Firm)"]
+    }
+  },
+  "foods": [
+    {"canonical_name": "Whey Protein Isolate", "synonyms": ["Whey Isolate Powder", "WPI 90"], "category": "Supplements", "diet_type": "Veg", "state": "raw", "protein_g": 86.0, "carbs_g": 3.0, "fat_g": 1.5, "fiber_g": 0.0, "moisture_g": 5.0, "kcal": 370.0, "base_inr_100g": 240.0, "allergens": ["dairy", "lactose"], "iron_mg": 0.8, "calcium_mg": 380.0, "b12_mcg": 1.8, "leucine_g_per_100g_prot": 11.2, "phytate_mg": 0.0},
+    {"canonical_name": "Soya Chunks (Nutrela)", "synonyms": ["Soy TVP", "Textured Soy Protein", "Meal Maker"], "category": "Legumes_Soy", "diet_type": "Vegan", "state": "raw", "protein_g": 52.0, "carbs_g": 33.0, "fat_g": 0.5, "fiber_g": 13.0, "moisture_g": 8.0, "kcal": 345.0, "base_inr_100g": 14.0, "allergens": ["soy"], "iron_mg": 15.0, "calcium_mg": 350.0, "b12_mcg": 0.0, "leucine_g_per_100g_prot": 7.8, "phytate_mg": 950.0},
+    {"canonical_name": "Pea Protein Isolate", "synonyms": ["Yellow Pea Protein", "Plant Protein Powder"], "category": "Supplements", "diet_type": "Vegan", "state": "raw", "protein_g": 78.0, "carbs_g": 6.0, "fat_g": 4.5, "fiber_g": 2.0, "moisture_g": 6.0, "kcal": 377.0, "base_inr_100g": 145.0, "allergens": [], "iron_mg": 18.0, "calcium_mg": 110.0, "b12_mcg": 0.0, "leucine_g_per_100g_prot": 8.2, "phytate_mg": 180.0},
+    {"canonical_name": "Chicken Breast (Skinless)", "synonyms": ["Boneless Chicken Breast", "Broiler Breast"], "category": "Poultry", "diet_type": "Non-Veg", "state": "raw", "protein_g": 23.0, "carbs_g": 0.0, "fat_g": 2.6, "fiber_g": 0.0, "moisture_g": 73.0, "kcal": 116.0, "base_inr_100g": 34.0, "allergens": [], "iron_mg": 0.7, "calcium_mg": 11.0, "b12_mcg": 0.3, "leucine_g_per_100g_prot": 8.4, "phytate_mg": 0.0},
+    {"canonical_name": "Whole Boiled Eggs", "synonyms": ["Chicken Egg Whole", "Desi Egg Boiled"], "category": "Eggs", "diet_type": "Eggetarian", "state": "cooked_boiled", "protein_g": 12.6, "carbs_g": 1.1, "fat_g": 10.6, "fiber_g": 0.0, "moisture_g": 74.5, "kcal": 150.0, "base_inr_100g": 14.0, "allergens": ["egg"], "iron_mg": 1.8, "calcium_mg": 50.0, "b12_mcg": 1.1, "leucine_g_per_100g_prot": 8.6, "phytate_mg": 0.0},
+    {"canonical_name": "Egg Whites (Pasteurized)", "synonyms": ["Liquid Egg White", "Albumen"], "category": "Eggs", "diet_type": "Eggetarian", "state": "raw", "protein_g": 10.9, "carbs_g": 0.7, "fat_g": 0.2, "fiber_g": 0.0, "moisture_g": 87.5, "kcal": 52.0, "base_inr_100g": 22.0, "allergens": ["egg"], "iron_mg": 0.1, "calcium_mg": 7.0, "b12_mcg": 0.1, "leucine_g_per_100g_prot": 8.8, "phytate_mg": 0.0},
+    {"canonical_name": "Low-Fat Paneer", "synonyms": ["Cottage Cheese Low Fat", "Malai-Free Paneer"], "category": "Dairy", "diet_type": "Veg", "state": "raw", "protein_g": 20.5, "carbs_g": 3.5, "fat_g": 14.0, "fiber_g": 0.0, "moisture_g": 59.0, "kcal": 222.0, "base_inr_100g": 44.0, "allergens": ["dairy", "lactose"], "iron_mg": 0.2, "calcium_mg": 470.0, "b12_mcg": 0.8, "leucine_g_per_100g_prot": 9.5, "phytate_mg": 0.0},
+    {"canonical_name": "Greek Yogurt (Plain)", "synonyms": ["Strained Curd", "Hung Curd High Protein"], "category": "Dairy", "diet_type": "Veg", "state": "raw", "protein_g": 10.0, "carbs_g": 4.0, "fat_g": 4.0, "fiber_g": 0.0, "moisture_g": 81.0, "kcal": 92.0, "base_inr_100g": 48.0, "allergens": ["dairy", "lactose"], "iron_mg": 0.1, "calcium_mg": 115.0, "b12_mcg": 0.7, "leucine_g_per_100g_prot": 9.6, "phytate_mg": 0.0},
+    {"canonical_name": "Dahi (Curd)", "synonyms": ["Homemade Curd", "Plain Yogurt"], "category": "Dairy", "diet_type": "Veg", "state": "raw", "protein_g": 4.0, "carbs_g": 4.7, "fat_g": 3.2, "fiber_g": 0.0, "moisture_g": 87.0, "kcal": 64.0, "base_inr_100g": 8.5, "allergens": ["dairy", "lactose"], "iron_mg": 0.1, "calcium_mg": 120.0, "b12_mcg": 0.4, "leucine_g_per_100g_prot": 9.4, "phytate_mg": 0.0},
+    {"canonical_name": "Tofu (Firm)", "synonyms": ["Soy Paneer", "Bean Curd"], "category": "Legumes_Soy", "diet_type": "Vegan", "state": "raw", "protein_g": 16.0, "carbs_g": 2.8, "fat_g": 8.0, "fiber_g": 1.2, "moisture_g": 71.0, "kcal": 147.0, "base_inr_100g": 42.0, "allergens": ["soy"], "iron_mg": 2.7, "calcium_mg": 340.0, "b12_mcg": 0.0, "leucine_g_per_100g_prot": 7.9, "phytate_mg": 420.0},
+    {"canonical_name": "Moong Dal Split", "synonyms": ["Green Gram Split", "Yellow Moong"], "category": "Legumes_Soy", "diet_type": "Vegan", "state": "raw", "protein_g": 23.9, "carbs_g": 59.9, "fat_g": 1.2, "fiber_g": 8.2, "moisture_g": 9.5, "kcal": 346.0, "base_inr_100g": 13.5, "allergens": [], "iron_mg": 4.4, "calcium_mg": 95.0, "b12_mcg": 0.0, "leucine_g_per_100g_prot": 7.6, "phytate_mg": 680.0},
+    {"canonical_name": "Roasted Chana (Bengal Gram)", "synonyms": ["Bhuna Chana", "Roasted Chickpeas"], "category": "Legumes_Soy", "diet_type": "Vegan", "state": "cooked_roasted", "protein_g": 21.5, "carbs_g": 58.0, "fat_g": 5.2, "fiber_g": 12.0, "moisture_g": 4.5, "kcal": 365.0, "base_inr_100g": 12.0, "allergens": [], "iron_mg": 4.8, "calcium_mg": 70.0, "b12_mcg": 0.0, "leucine_g_per_100g_prot": 7.4, "phytate_mg": 510.0},
+    {"canonical_name": "Rajma (Kidney Beans)", "synonyms": ["Red Kidney Beans", "Chitra Rajma"], "category": "Legumes_Soy", "diet_type": "Vegan", "state": "raw", "protein_g": 22.5, "carbs_g": 60.0, "fat_g": 1.1, "fiber_g": 15.0, "moisture_g": 10.5, "kcal": 340.0, "base_inr_100g": 14.5, "allergens": [], "iron_mg": 6.2, "calcium_mg": 130.0, "b12_mcg": 0.0, "leucine_g_per_100g_prot": 7.8, "phytate_mg": 890.0},
+    {"canonical_name": "Kabuli Chana", "synonyms": ["White Chickpeas", "Garbanzo Beans"], "category": "Legumes_Soy", "diet_type": "Vegan", "state": "raw", "protein_g": 19.0, "carbs_g": 61.0, "fat_g": 5.3, "fiber_g": 12.5, "moisture_g": 9.8, "kcal": 368.0, "base_inr_100g": 13.0, "allergens": [], "iron_mg": 5.4, "calcium_mg": 115.0, "b12_mcg": 0.0, "leucine_g_per_100g_prot": 7.3, "phytate_mg": 740.0},
+    {"canonical_name": "Moong Sprouts", "synonyms": ["Sprouted Green Gram", "Ankurit Moong"], "category": "Legumes_Soy", "diet_type": "Vegan", "state": "raw", "protein_g": 8.5, "carbs_g": 14.0, "fat_g": 0.5, "fiber_g": 3.5, "moisture_g": 76.0, "kcal": 95.0, "base_inr_100g": 10.0, "allergens": [], "iron_mg": 1.9, "calcium_mg": 38.0, "b12_mcg": 0.0, "leucine_g_per_100g_prot": 7.5, "phytate_mg": 210.0},
+    {"canonical_name": "Peanut Butter (Unsweetened)", "synonyms": ["Natural Peanut Paste", "Groundnut Butter"], "category": "Nuts_Seeds", "diet_type": "Vegan", "state": "cooked_roasted", "protein_g": 28.0, "carbs_g": 19.0, "fat_g": 49.0, "fiber_g": 7.0, "moisture_g": 1.8, "kcal": 629.0, "base_inr_100g": 38.0, "allergens": ["peanuts", "nuts"], "iron_mg": 2.0, "calcium_mg": 50.0, "b12_mcg": 0.0, "leucine_g_per_100g_prot": 6.6, "phytate_mg": 820.0},
+    {"canonical_name": "Pumpkin Seeds", "synonyms": ["Pepitas", "Kaddu Beej"], "category": "Nuts_Seeds", "diet_type": "Vegan", "state": "raw", "protein_g": 30.0, "carbs_g": 11.0, "fat_g": 49.0, "fiber_g": 6.0, "moisture_g": 5.0, "kcal": 605.0, "base_inr_100g": 75.0, "allergens": ["seeds"], "iron_mg": 8.8, "calcium_mg": 46.0, "b12_mcg": 0.0, "leucine_g_per_100g_prot": 7.7, "phytate_mg": 980.0},
+    {"canonical_name": "Ragi Malt / Finger Millet", "synonyms": ["Nachni Flour", "Finger Millet"], "category": "Grains", "diet_type": "Vegan", "state": "raw", "protein_g": 7.3, "carbs_g": 72.0, "fat_g": 1.5, "fiber_g": 11.0, "moisture_g": 11.0, "kcal": 331.0, "base_inr_100g": 8.0, "allergens": [], "iron_mg": 4.6, "calcium_mg": 344.0, "b12_mcg": 0.0, "leucine_g_per_100g_prot": 9.1, "phytate_mg": 480.0},
+    {"canonical_name": "Rohu Fish Fillet", "synonyms": ["Rui Fish", "Indian Carp"], "category": "Seafood", "diet_type": "Non-Veg", "state": "raw", "protein_g": 19.5, "carbs_g": 0.0, "fat_g": 2.8, "fiber_g": 0.0, "moisture_g": 76.5, "kcal": 103.0, "base_inr_100g": 32.0, "allergens": ["fish"], "iron_mg": 1.0, "calcium_mg": 45.0, "b12_mcg": 2.4, "leucine_g_per_100g_prot": 8.3, "phytate_mg": 0.0},
+    {"canonical_name": "Tuna in Water", "synonyms": ["Canned Light Tuna", "Skipjack Tuna"], "category": "Seafood", "diet_type": "Non-Veg", "state": "cooked_steamed", "protein_g": 25.0, "carbs_g": 0.0, "fat_g": 1.0, "fiber_g": 0.0, "moisture_g": 73.0, "kcal": 109.0, "base_inr_100g": 58.0, "allergens": ["fish"], "iron_mg": 1.3, "calcium_mg": 14.0, "b12_mcg": 2.9, "leucine_g_per_100g_prot": 8.5, "phytate_mg": 0.0}
+  ]
+}
+

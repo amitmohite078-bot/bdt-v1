@@ -1,0 +1,69 @@
+{
+  "learned_at": "2026-11-22T14:29:22Z",
+  "categories": {
+    "Dairy": {
+      "sample_size": 1419,
+      "protein_p01": 3.43,
+      "protein_p99": 23.58,
+      "kcal_p01": 54.6,
+      "kcal_p99": 255.3,
+      "protein_median": 10.27
+    },
+    "Eggs": {
+      "sample_size": 984,
+      "protein_p01": 9.08,
+      "protein_p99": 14.54,
+      "kcal_p01": 39.7,
+      "kcal_p99": 173.3,
+      "protein_median": 11.74
+    },
+    "Grains": {
+      "sample_size": 578,
+      "protein_p01": 6.3,
+      "protein_p99": 8.53,
+      "kcal_p01": 285.1,
+      "kcal_p99": 386.4,
+      "protein_median": 7.31
+    },
+    "Legumes_Soy": {
+      "sample_size": 3520,
+      "protein_p01": 7.58,
+      "protein_p99": 26.57,
+      "kcal_p01": 84.3,
+      "kcal_p99": 415.6,
+      "protein_median": 20.44
+    },
+    "Nuts_Seeds": {
+      "sample_size": 1177,
+      "protein_p01": 24.04,
+      "protein_p99": 33.92,
+      "kcal_p01": 513.1,
+      "kcal_p99": 696.2,
+      "protein_median": 28.79
+    },
+    "Poultry": {
+      "sample_size": 531,
+      "protein_p01": 19.47,
+      "protein_p99": 26.7,
+      "kcal_p01": 97.7,
+      "kcal_p99": 133.9,
+      "protein_median": 23.02
+    },
+    "Seafood": {
+      "sample_size": 1060,
+      "protein_p01": 16.39,
+      "protein_p99": 29.16,
+      "kcal_p01": 86.0,
+      "kcal_p99": 127.4,
+      "protein_median": 22.48
+    },
+    "Supplements": {
+      "sample_size": 1238,
+      "protein_p01": 65.72,
+      "protein_p99": 95.88,
+      "kcal_p01": 308.3,
+      "kcal_p99": 429.1,
+      "protein_median": 81.47
+    }
+  }
+}

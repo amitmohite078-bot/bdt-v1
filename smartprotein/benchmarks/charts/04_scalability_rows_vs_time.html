@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="UTF-8">
+  <style>
+    #vis.vega-embed {
+      width: 100%;
+      display: flex;
+    }
+
+    #vis.vega-embed details,
+    #vis.vega-embed details summary {
+      position: relative;
+    }
+  </style>
+  <script type="text/javascript" src="https://cdn.jsdelivr.net/npm/vega@6"></script>
+  <script type="text/javascript" src="https://cdn.jsdelivr.net/npm/vega-lite@6.4.1"></script>
+  <script type="text/javascript" src="https://cdn.jsdelivr.net/npm/vega-embed@7"></script>
+</head>
+<body>
+  <div id="vis"></div>
+  <script>
+    (function(vegaEmbed) {
+      var spec = {"config": {"view": {"continuousWidth": 300, "continuousHeight": 300}}, "data": {"name": "data-1013bf8be5b5d930630433d4b08703fb"}, "mark": {"type": "line", "point": true, "strokeWidth": 3}, "encoding": {"tooltip": [{"field": "rows_processed", "type": "quantitative"}, {"field": "execution_sec", "type": "quantitative"}, {"field": "throughput_rec_sec", "type": "quantitative"}], "x": {"field": "rows_processed", "title": "Dataset Size (Rows)", "type": "quantitative"}, "y": {"field": "execution_sec", "title": "Execution Time (seconds)", "type": "quantitative"}}, "height": 300, "title": "Linear Scalability: Rows vs Execution Time", "width": 460, "$schema": "https://vega.github.io/schema/vega-lite/v6.4.1.json", "datasets": {"data-1013bf8be5b5d930630433d4b08703fb": [{"rows_processed": 15000, "execution_sec": 0.0063, "throughput_rec_sec": 2362986.0}, {"rows_processed": 50000, "execution_sec": 0.0168, "throughput_rec_sec": 2979400.0}, {"rows_processed": 150000, "execution_sec": 0.0576, "throughput_rec_sec": 2603204.0}, {"rows_processed": 300000, "execution_sec": 0.1032, "throughput_rec_sec": 2906202.0}]}};
+      var embedOpt = {"mode": "vega-lite"};
+
+      function showError(el, error){
+          el.innerHTML = ('<div style="color:red;">'
+                          + '<p>JavaScript Error: ' + error.message + '</p>'
+                          + "<p>This usually means there's a typo in your chart specification. "
+                          + "See the javascript console for the full traceback.</p>"
+                          + '</div>');
+          throw error;
+      }
+      const el = document.getElementById('vis');
+      vegaEmbed("#vis", spec, embedOpt)
+        .catch(error => showError(el, error));
+    })(vegaEmbed);
+
+  </script>
+</body>
+</html>

@@ -1,0 +1,3 @@
+record_id,source_db,food_name,category,diet_type,state_raw_cooked,serving_unit,protein_g,carbs_g,fat_g,fiber_g,moisture_g,reported_kcal,energy_unit,iron_mg,calcium_mg,vitamin_b12_mcg,leucine_g_per_100g_protein,phytate_mg,allergens,last_updated
+OCR-00001,OCR_LABEL,High-Protein Malai Paneer (OCR),Dairy,Veg,raw,per_100g,21.0,3.5,14.0,0.0,55.0,224.0,kcal,0.2,350.0,0.5,9.2,0.0,dairy,2026-11-11
+OCR-00002,OCR_LABEL,Misprinted Soy Crisp (OCR),Legumes_Soy,Vegan,raw,per_100g,135.0,20.0,2.0,5.0,55.0,120.0,kcal,0.2,350.0,0.5,9.2,0.0,soy,2026-11-11

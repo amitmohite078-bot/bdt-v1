@@ -1,0 +1,41 @@
+{
+  "_mentor_note": "DIAAS and PDCAAS values below are compiled as illustrative values inspired by FAO Food and Nutrition Paper No. 92 (2013) and published sports-nutrition literature (e.g., whey/milk/egg >= 1.0, soy ~0.90, chickpea/lentils ~0.55-0.70, millet/grains ~0.40-0.55). Verify exact food-specific ileal digestibility coefficients against FAO Paper No. 92 before academic/clinical citation.",
+  "diaas_pdcaas_by_food": {
+    "Whey Protein Isolate": {"diaas": 1.09, "pdcaas": 1.00, "limiting_aa": "None (Complete)", "digestibility_speed": "Fast", "best_timing": "Post-Workout (0-60 min)"},
+    "Soya Chunks (Nutrela)": {"diaas": 0.91, "pdcaas": 0.95, "limiting_aa": "Mild Methionine", "digestibility_speed": "Medium", "best_timing": "Lunch / Post-Workout"},
+    "Pea Protein Isolate": {"diaas": 0.82, "pdcaas": 0.89, "limiting_aa": "Methionine+Cysteine", "digestibility_speed": "Medium-Fast", "best_timing": "Post-Workout (Vegan)"},
+    "Chicken Breast (Skinless)": {"diaas": 1.08, "pdcaas": 1.00, "limiting_aa": "None (Complete)", "digestibility_speed": "Medium", "best_timing": "Lunch / Post-Workout"},
+    "Whole Boiled Eggs": {"diaas": 1.13, "pdcaas": 1.00, "limiting_aa": "None (Complete)", "digestibility_speed": "Medium", "best_timing": "Breakfast / Post-Workout"},
+    "Egg Whites (Pasteurized)": {"diaas": 1.10, "pdcaas": 1.00, "limiting_aa": "None (Complete)", "digestibility_speed": "Medium-Fast", "best_timing": "Pre/Post-Workout"},
+    "Low-Fat Paneer": {"diaas": 1.05, "pdcaas": 1.00, "limiting_aa": "None (Complete)", "digestibility_speed": "Slow (Casein)", "best_timing": "Dinner / Pre-Sleep"},
+    "Greek Yogurt (Plain)": {"diaas": 1.06, "pdcaas": 1.00, "limiting_aa": "None (Complete)", "digestibility_speed": "Slow-Medium", "best_timing": "Snack / Pre-Sleep"},
+    "Dahi (Curd)": {"diaas": 1.04, "pdcaas": 1.00, "limiting_aa": "None (Complete)", "digestibility_speed": "Slow-Medium", "best_timing": "Lunch / Snack"},
+    "Tofu (Firm)": {"diaas": 0.89, "pdcaas": 0.92, "limiting_aa": "Mild Methionine", "digestibility_speed": "Medium", "best_timing": "Lunch / Dinner"},
+    "Moong Dal Split": {"diaas": 0.64, "pdcaas": 0.69, "limiting_aa": "Methionine+Cysteine", "digestibility_speed": "Medium-Slow", "best_timing": "Lunch (Pair w/ Grain)"},
+    "Roasted Chana (Bengal Gram)": {"diaas": 0.66, "pdcaas": 0.71, "limiting_aa": "Methionine+Cysteine", "digestibility_speed": "Slow", "best_timing": "Evening Snack"},
+    "Rajma (Kidney Beans)": {"diaas": 0.60, "pdcaas": 0.68, "limiting_aa": "Methionine+Cysteine", "digestibility_speed": "Slow", "best_timing": "Lunch (Pair w/ Rice)"},
+    "Kabuli Chana": {"diaas": 0.65, "pdcaas": 0.70, "limiting_aa": "Methionine+Cysteine", "digestibility_speed": "Slow", "best_timing": "Lunch (Pair w/ Grain)"},
+    "Moong Sprouts": {"diaas": 0.72, "pdcaas": 0.76, "limiting_aa": "Mild Methionine", "digestibility_speed": "Medium", "best_timing": "Breakfast / Pre-Workout"},
+    "Peanut Butter (Unsweetened)": {"diaas": 0.46, "pdcaas": 0.52, "limiting_aa": "Lysine+Methionine", "digestibility_speed": "Slow", "best_timing": "Pre-Workout / Snack"},
+    "Pumpkin Seeds": {"diaas": 0.72, "pdcaas": 0.78, "limiting_aa": "Lysine", "digestibility_speed": "Slow", "best_timing": "Snack / Salad Topper"},
+    "Ragi Malt / Finger Millet": {"diaas": 0.52, "pdcaas": 0.58, "limiting_aa": "Lysine", "digestibility_speed": "Slow", "best_timing": "Breakfast (Pair w/ Dairy/Dal)"},
+    "Rohu Fish Fillet": {"diaas": 1.05, "pdcaas": 1.00, "limiting_aa": "None (Complete)", "digestibility_speed": "Medium-Fast", "best_timing": "Lunch / Dinner"},
+    "Tuna in Water": {"diaas": 1.06, "pdcaas": 1.00, "limiting_aa": "None (Complete)", "digestibility_speed": "Medium-Fast", "best_timing": "Post-Workout / Lunch"}
+  },
+  "cooking_adjustments": {
+    "raw": {"moisture_yield_factor": 1.00, "protein_retention": 1.00, "kcal_multiplier": 1.00, "phytate_reduction": 0.00},
+    "cooked_boiled": {"moisture_yield_factor": 0.92, "protein_retention": 0.95, "kcal_multiplier": 0.96, "phytate_reduction": 0.35},
+    "cooked_steamed": {"moisture_yield_factor": 0.96, "protein_retention": 0.98, "kcal_multiplier": 0.98, "phytate_reduction": 0.30},
+    "cooked_grilled": {"moisture_yield_factor": 1.18, "protein_retention": 0.96, "kcal_multiplier": 1.12, "phytate_reduction": 0.20},
+    "cooked_roasted": {"moisture_yield_factor": 1.06, "protein_retention": 0.97, "kcal_multiplier": 1.05, "phytate_reduction": 0.25},
+    "cooked_fried": {"moisture_yield_factor": 1.10, "protein_retention": 0.88, "kcal_multiplier": 1.45, "phytate_reduction": 0.20}
+  },
+  "complementary_pairings": [
+    {"primary_food": "Moong Dal Split", "partner_food": "Ragi Malt / Finger Millet", "reason": "Legume (rich in Lysine, low Methionine) + Millet/Cereal (rich in Methionine, low Lysine) yields a balanced EAA profile."},
+    {"primary_food": "Rajma (Kidney Beans)", "partner_food": "Dahi (Curd)", "reason": "Dairy whey/casein supplies Methionine & Lysine to complete kidney bean amino acids."},
+    {"primary_food": "Kabuli Chana", "partner_food": "Pumpkin Seeds", "reason": "Seeds add sulfur amino acids (Methionine+Cysteine) and leucine to chickpeas."},
+    {"primary_food": "Peanut Butter (Unsweetened)", "partner_food": "Whey Protein Isolate", "reason": "Whey overcomes peanut lysine/methionine deficits while boosting leucine >2.5g."},
+    {"primary_food": "Ragi Malt / Finger Millet", "partner_food": "Moong Sprouts", "reason": "Sprouted legumes have reduced phytates and supply lysine lacking in finger millet."}
+  ]
+}
+

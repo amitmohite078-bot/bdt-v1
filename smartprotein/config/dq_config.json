@@ -1,0 +1,39 @@
+{
+  "pii_hash_salt": "smartprotein_bdt_2026_salt",
+  "usd_to_inr": 84.0,
+  "kj_to_kcal": 4.184,
+  "dq_weights": {
+    "completeness": 0.25,
+    "validity": 0.30,
+    "consistency": 0.25,
+    "uniqueness": 0.20
+  },
+  "source_trust_weights": {
+    "IFCT_2017": 0.45,
+    "USDA_FDC": 0.40,
+    "OPEN_FOOD_FACTS": 0.15,
+    "OCR_LABEL": 0.10
+  },
+  "diet_rank": {
+    "Vegan": 0,
+    "Veg": 1,
+    "Eggetarian": 2,
+    "Non-Veg": 3
+  },
+  "keyword_min_diet": {
+    "chicken": "Non-Veg",
+    "rohu": "Non-Veg",
+    "tuna": "Non-Veg",
+    "fish": "Non-Veg",
+    "mutton": "Non-Veg",
+    "egg": "Eggetarian",
+    "paneer": "Veg",
+    "curd": "Veg",
+    "dahi": "Veg",
+    "yogurt": "Veg",
+    "whey": "Veg",
+    "milk": "Veg",
+    "cottage cheese": "Veg"
+  }
+}
+

@@ -1,0 +1,14 @@
+# SmartProtein Option 1: Clinical Nutrition & Trust (Pantone-Validated Light Theme)
+# Primary:   PANTONE 17-5641 Emerald (#009473)
+# Canvas:    PANTONE 11-4201 Cloud Dancer (#F0EEE9)
+# Surface:   Pure White (#FFFFFF)
+# Body Text: PANTONE 19-4007 Anthracite (#28282D)
+
+[theme]
+base = "light"
+primaryColor = "#009473"
+backgroundColor = "#F0EEE9"
+secondaryBackgroundColor = "#FFFFFF"
+textColor = "#28282D"
+font = "sans serif"
+

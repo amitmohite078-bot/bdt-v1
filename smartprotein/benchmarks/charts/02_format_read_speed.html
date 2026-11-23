@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="UTF-8">
+  <style>
+    #vis.vega-embed {
+      width: 100%;
+      display: flex;
+    }
+
+    #vis.vega-embed details,
+    #vis.vega-embed details summary {
+      position: relative;
+    }
+  </style>
+  <script type="text/javascript" src="https://cdn.jsdelivr.net/npm/vega@6"></script>
+  <script type="text/javascript" src="https://cdn.jsdelivr.net/npm/vega-lite@6.4.1"></script>
+  <script type="text/javascript" src="https://cdn.jsdelivr.net/npm/vega-embed@7"></script>
+</head>
+<body>
+  <div id="vis"></div>
+  <script>
+    (function(vegaEmbed) {
+      var spec = {"config": {"view": {"continuousWidth": 300, "continuousHeight": 300}}, "data": {"name": "data-4b987a8999e9ac55411fdfbb75963861"}, "mark": {"type": "bar", "cornerRadiusTopLeft": 4, "cornerRadiusTopRight": 4}, "encoding": {"color": {"field": "format", "type": "nominal"}, "tooltip": [{"field": "format", "type": "nominal"}, {"field": "selective_read_sec", "type": "quantitative"}, {"field": "write_sec", "type": "quantitative"}], "x": {"field": "format", "title": "Storage Format", "type": "nominal"}, "y": {"field": "selective_read_sec", "title": "4-Column Projection Read Time (s)", "type": "quantitative"}}, "height": 300, "title": "Selective Columnar Read Speed: CSV vs Parquet vs ORC", "width": 420, "$schema": "https://vega.github.io/schema/vega-lite/v6.4.1.json", "datasets": {"data-4b987a8999e9ac55411fdfbb75963861": [{"format": "CSV (Uncompressed)", "rows": 200000, "size_mb": 28.639, "write_sec": 0.91, "selective_read_sec": 0.069}, {"format": "Parquet (Snappy)", "rows": 200000, "size_mb": 2.819, "write_sec": 0.159, "selective_read_sec": 0.773}, {"format": "ORC (Snappy)", "rows": 200000, "size_mb": 7.136, "write_sec": 0.174, "selective_read_sec": 0.026}]}};
+      var embedOpt = {"mode": "vega-lite"};
+
+      function showError(el, error){
+          el.innerHTML = ('<div style="color:red;">'
+                          + '<p>JavaScript Error: ' + error.message + '</p>'
+                          + "<p>This usually means there's a typo in your chart specification. "
+                          + "See the javascript console for the full traceback.</p>"
+                          + '</div>');
+          throw error;
+      }
+      const el = document.getElementById('vis');
+      vegaEmbed("#vis", spec, embedOpt)
+        .catch(error => showError(el, error));
+    })(vegaEmbed);
+
+  </script>
+</body>
+</html>

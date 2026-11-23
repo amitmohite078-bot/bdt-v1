@@ -1,0 +1,42 @@
+{
+  "engine": "gx_compatible_runner",
+  "all_passed": true,
+  "total_checks": 7,
+  "results": [
+    {
+      "expectation": "foods.non_empty",
+      "success": true,
+      "detail": "Found 80 curated food entries"
+    },
+    {
+      "expectation": "foods.no_null_canonical_name",
+      "success": true,
+      "detail": "Null canonical_name count: 0"
+    },
+    {
+      "expectation": "foods.protein_between_0_and_100",
+      "success": true,
+      "detail": "Min=3.97, Max=85.95"
+    },
+    {
+      "expectation": "foods.no_animal_labeled_vegan",
+      "success": true,
+      "detail": "Zero meat/dairy/egg items tagged Vegan"
+    },
+    {
+      "expectation": "foods.confidence_score_above_50",
+      "success": true,
+      "detail": "Min confidence=53.0"
+    },
+    {
+      "expectation": "prices.all_positive_inr",
+      "success": true,
+      "detail": "Price range INR/100g: [5.88, 338.97]"
+    },
+    {
+      "expectation": "users.pii_hashed_and_valid_weight",
+      "success": true,
+      "detail": "Verified 3571 anonymized users with valid weight"
+    }
+  ]
+}

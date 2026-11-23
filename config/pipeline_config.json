@@ -1,0 +1,49 @@
+{
+  "project_name": "FitGuard-HDFS",
+  "hdfs": {
+    "namenode_uri": "hdfs://namenode:9000",
+    "base_path": "/fitguard",
+    "block_size_mb": 128,
+    "replication_factor": 2
+  },
+  "local_lakehouse_root": "lakehouse/fitguard",
+  "zones": {
+    "bronze": "bronze",
+    "silver": "silver",
+    "quarantine": "quarantine",
+    "gold": "gold"
+  },
+  "dataset_sizes": {
+    "num_users": 500,
+    "telemetry_days": 14,
+    "num_food_listings": 2400
+  },
+  "dq_thresholds": {
+    "heart_rate_min": 32,
+    "heart_rate_max": 220,
+    "spo2_min": 70.0,
+    "spo2_max": 100.0,
+    "max_steps_per_hour": 18000,
+    "max_sleep_hours_per_day": 18.0,
+    "min_weight_kg": 25.0,
+    "max_weight_kg": 250.0,
+    "min_budget_inr": 30.0,
+    "max_budget_inr": 10000.0,
+    "max_protein_per_100g": 95.0,
+    "max_cost_per_100g_inr": 2500.0,
+    "usd_to_inr": 84.0
+  },
+  "protein_target_g_per_kg": {
+    "Muscle Gain": 2.0,
+    "Fat Loss": 1.6,
+    "Athletic Endurance": 1.5,
+    "General Wellness": 1.1
+  },
+  "diet_hierarchy": {
+    "Vegan": ["Vegan"],
+    "Veg": ["Vegan", "Veg"],
+    "Eggetarian": ["Vegan", "Veg", "Eggetarian"],
+    "Non-Veg": ["Vegan", "Veg", "Eggetarian", "Non-Veg"]
+  }
+}
+

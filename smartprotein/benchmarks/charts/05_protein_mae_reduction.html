@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="UTF-8">
+  <style>
+    #vis.vega-embed {
+      width: 100%;
+      display: flex;
+    }
+
+    #vis.vega-embed details,
+    #vis.vega-embed details summary {
+      position: relative;
+    }
+  </style>
+  <script type="text/javascript" src="https://cdn.jsdelivr.net/npm/vega@6"></script>
+  <script type="text/javascript" src="https://cdn.jsdelivr.net/npm/vega-lite@6.4.1"></script>
+  <script type="text/javascript" src="https://cdn.jsdelivr.net/npm/vega-embed@7"></script>
+</head>
+<body>
+  <div id="vis"></div>
+  <script>
+    (function(vegaEmbed) {
+      var spec = {"config": {"view": {"continuousWidth": 300, "continuousHeight": 300}}, "data": {"name": "data-e85bad3d27907440b8ba30c684277200"}, "mark": {"type": "bar", "cornerRadiusTopLeft": 4, "cornerRadiusTopRight": 4}, "encoding": {"color": {"field": "Stage", "type": "nominal"}, "tooltip": [{"field": "Stage", "type": "nominal"}, {"field": "MAE_g_per_100g", "type": "quantitative"}], "x": {"field": "Stage", "sort": null, "title": "Pipeline Stage", "type": "nominal"}, "y": {"field": "MAE_g_per_100g", "title": "Protein MAE vs Lab Reference (g/100g)", "type": "quantitative"}}, "height": 300, "title": "Protein Accuracy Error (MAE): Before vs After Cleaning", "width": 400, "$schema": "https://vega.github.io/schema/vega-lite/v6.4.1.json", "datasets": {"data-e85bad3d27907440b8ba30c684277200": [{"Stage": "Before Cleaning (Raw Mean)", "MAE_g_per_100g": 2.65}, {"Stage": "After Cleaning (Trust-Reconciled)", "MAE_g_per_100g": 0.685}]}};
+      var embedOpt = {"mode": "vega-lite"};
+
+      function showError(el, error){
+          el.innerHTML = ('<div style="color:red;">'
+                          + '<p>JavaScript Error: ' + error.message + '</p>'
+                          + "<p>This usually means there's a typo in your chart specification. "
+                          + "See the javascript console for the full traceback.</p>"
+                          + '</div>');
+          throw error;
+      }
+      const el = document.getElementById('vis');
+      vegaEmbed("#vis", spec, embedOpt)
+        .catch(error => showError(el, error));
+    })(vegaEmbed);
+
+  </script>
+</body>
+</html>

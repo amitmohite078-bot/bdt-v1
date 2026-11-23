@@ -1,0 +1,9 @@
+# SmartProtein Option 1: Clinical Nutrition & Trust (Pantone-Validated Light Theme)
+[theme]
+base = "light"
+primaryColor = "#009473"
+backgroundColor = "#F0EEE9"
+secondaryBackgroundColor = "#FFFFFF"
+textColor = "#28282D"
+font = "sans serif"
+
