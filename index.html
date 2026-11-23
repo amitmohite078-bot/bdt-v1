@@ -11,6 +11,7 @@
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Source+Sans+Pro:wght@300;400;600;700&family=JetBrains+Mono:wght@400;600&display=swap" rel="stylesheet">
   <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+  <script src="real_solutions.js"></script>
   <style>
     :root {
       --emerald: #009473;
@@ -1072,7 +1073,7 @@
       const goal = elGoal ? elGoal.value : "Muscle_Gain";
       const weight = parseFloat(elWeight.value) || 70;
       const budget = parseFloat(elBudget.value) || 160;
-      const radius = elRadius ? elRadius.value : "15";
+      const radius = parseFloat(elRadius ? elRadius.value : "15");
       const med = elMed ? elMed.value : "none";
 
       const dw = document.getElementById("dispWeight");
@@ -1093,44 +1094,79 @@
       if (rtd) rtd.innerText = goalMult + " g/kg target";
       if (rrd) rrd.innerText = `Within ${radius} km in ${city}`;
 
-      const foods = CANDIDATES_DB[diet] || CANDIDATES_DB["Veg"];
-      const stores = CITY_STORES[city] || CITY_STORES["Bengaluru"];
-      const rfc = document.getElementById("resFoodsCount");
-      if (rfc) rfc.innerText = foods.length * 3;
+      // Lookup real Medallion Lakehouse solution
+      const key = `${diet}_${city}_${goal}`;
+      const sol = (typeof REAL_SOLUTIONS !== 'undefined' && REAL_SOLUTIONS[key])
+                  ? REAL_SOLUTIONS[key]
+                  : (typeof REAL_SOLUTIONS !== 'undefined' && REAL_SOLUTIONS[`Veg_Bengaluru_Muscle_Gain`])
+                    ? REAL_SOLUTIONS[`Veg_Bengaluru_Muscle_Gain`]
+                    : null;
 
-      // Simulate LP Allocation across 4 slots: Breakfast, Lunch, Post-Workout Fuel, Dinner
-      const slots = ["Breakfast", "Lunch", "Post-Workout Fuel", "Dinner"];
       let totalCost = 0;
       let totalProt = 0;
-      const mealRows = [];
+      let mealRows = [];
+      let candidates = [];
 
-      slots.forEach((s, idx) => {
-        const f = foods[idx % foods.length];
-        const targetSlot = targetProt / 4.0;
-        let portion = Math.min(f.maxG, Math.max(70, Math.round((targetSlot / f.usable100) * 100)));
-        let cost = (portion / 100) * f.price100;
+      if (sol) {
+        const rfc = document.getElementById("resFoodsCount");
+        if (rfc) rfc.innerText = sol.nearby_count;
 
-        if (totalCost + cost > budget && totalCost > 0) {
-          portion = Math.max(50, Math.round(portion * 0.70));
-          cost = (portion / 100) * f.price100;
-        }
+        // Dynamic scaling factor based on user's target protein vs base plan
+        const scale = targetProt / (sol.target_g || targetProt);
 
-        const pDelivered = Math.round((portion / 100) * f.usable100 * 10) / 10;
-        const leu = Math.round((portion / 100) * f.leu100 * 10) / 10;
-        totalCost += cost;
-        totalProt += pDelivered;
+        sol.meals.forEach(m => {
+          let scaledPortion = Math.max(30, Math.round(m.portion * scale));
+          let scaledCost = Math.round((scaledPortion / m.portion) * m.cost * 100) / 100;
+          let scaledProt = Math.round(m.prot * (scaledPortion / m.portion) * 10) / 10;
+          let scaledLeu = Math.round(m.leu * (scaledPortion / m.portion) * 100) / 100;
 
-        mealRows.push({
-          slot: s,
-          name: f.name,
-          portion: portion,
-          prot: pDelivered,
-          leu: leu,
-          cost: cost,
-          store: stores[idx % stores.length],
-          dist: (2.5 + idx * 2.1).toFixed(1)
+          totalCost += scaledCost;
+          totalProt += scaledProt;
+
+          mealRows.push({
+            slot: m.slot,
+            name: m.name,
+            portion: scaledPortion,
+            prot: scaledProt,
+            leu: scaledLeu,
+            leu_met: scaledLeu >= 2.2,
+            cost: scaledCost,
+            store: m.store,
+            dist: m.dist
+          });
         });
-      });
+
+        candidates = sol.candidates;
+      } else {
+        // Fallback if solutions script not loaded
+        const foods = CANDIDATES_DB[diet] || CANDIDATES_DB["Veg"];
+        const stores = CITY_STORES[city] || CITY_STORES["Bengaluru"];
+        const slots = ["Breakfast", "Lunch", "Post-Workout Fuel", "Dinner"];
+        slots.forEach((s, idx) => {
+          const f = foods[idx % foods.length];
+          const targetSlot = targetProt / 4.0;
+          let portion = Math.min(f.maxG, Math.max(70, Math.round((targetSlot / f.usable100) * 100)));
+          let cost = (portion / 100) * f.price100;
+          const pDelivered = Math.round((portion / 100) * f.usable100 * 10) / 10;
+          const leu = Math.round((portion / 100) * f.leu100 * 10) / 10;
+          totalCost += cost;
+          totalProt += pDelivered;
+          mealRows.push({
+            slot: s,
+            name: f.name,
+            portion: portion,
+            prot: pDelivered,
+            leu: leu,
+            leu_met: leu >= 2.2,
+            cost: cost,
+            store: stores[idx % stores.length],
+            dist: (2.5 + idx * 2.1).toFixed(1)
+          });
+        });
+      }
+
+      totalCost = Math.round(totalCost * 10) / 10;
+      totalProt = Math.round(totalProt * 10) / 10;
 
       const rc = document.getElementById("resCost");
       const rcd = document.getElementById("resCostDelta");
@@ -1166,7 +1202,7 @@
             <td><strong>${r.name}</strong></td>
             <td>${r.portion} g</td>
             <td><strong>${r.prot.toFixed(1)} g</strong></td>
-            <td>${r.leu >= 2.2 ? `<span class="tag-met">🟢 Trigger Met (${r.leu.toFixed(1)}g)</span>` : `<span class="tag-sub">🟡 Sub-trigger (${r.leu.toFixed(1)}g)</span>`}</td>
+            <td>${r.leu_met ? `<span class="tag-met">🟢 Trigger Met (${r.leu.toFixed(1)}g)</span>` : `<span class="tag-sub">🟡 Sub-trigger (${r.leu.toFixed(1)}g)</span>`}</td>
             <td>₹${r.cost.toFixed(2)}</td>
             <td>${r.store}</td>
             <td>${r.dist} km</td>
@@ -1179,20 +1215,18 @@
       const candTbody = document.getElementById("candidatesTableBody");
       if (candTbody) {
         candTbody.innerHTML = "";
-        foods.forEach((f, i) => {
+        candidates.forEach(f => {
           const tr = document.createElement("tr");
-          const cost10g = ((10 / f.usable100) * f.price100).toFixed(1);
-          const score = (0.92 - i * 0.04).toFixed(3);
           tr.innerHTML = `
             <td><strong>${f.name}</strong></td>
             <td>${f.diet}</td>
-            <td>${stores[i % stores.length]}</td>
-            <td>${(3.2 + i * 1.8).toFixed(1)} km</td>
+            <td>${f.store}</td>
+            <td>${f.dist} km</td>
             <td>${f.usable100} g</td>
             <td>₹${f.price100.toFixed(2)}</td>
-            <td>₹${cost10g}</td>
-            <td><strong>${score}</strong></td>
-            <td>High usable protein efficiency & optimal proximity in ${city}</td>
+            <td>₹${f.cost10g}</td>
+            <td><strong>${f.score.toFixed(3)}</strong></td>
+            <td>${f.explanation}</td>
           `;
           candTbody.appendChild(tr);
         });
